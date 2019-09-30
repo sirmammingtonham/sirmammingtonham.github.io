@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>AIART - Ethan Joseph</title>
+		<link rel="apple-touch-icon" sizes="180x180" href="../images/aiart/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="../images/aiart/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="../images/aiart/favicon/favicon-16x16.png">
+		<link rel="manifest" href="../images/aiart/favicon/site.webmanifest">
+		<link rel="mask-icon" href="../images/aiart/favicon/safari-pinned-tab.svg" color="#5bbad5">
+		<link rel="shortcut icon" href="../images/aiart/favicon/favicon.ico">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="msapplication-config" content="../images/aiart/favicon/browserconfig.xml">
+		<meta name="theme-color" content="#ffffff">
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<img src="../images/aiart/layer_25_filter_80.jpg" style="height:100px;" class="icon">
+						<h1>AIART</h1>
+						<p>AI Generated Art Project</p>
+						<p style="font-size:100%; padding-bottom:0.5em;">If it dies can I sell its art for more?</p>
+						<ul class="icons">
+							<li>
+								<a href="../index.html#projects" target="_top" class="icon solid fa-arrow-left alt">
+									<span class="label">Back</span>
+								</a>
+							</li>
+							<li>
+								<a href="https://github.com/sirmammingtonham" target="_blank" class="icon brands fa-github alt">
+									<span class="label">Github</span>
+								</a>
+							</li>
+						</ul>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Content -->
+							<section id="content" class="main">
+								<!-- <span class="image main"><img src="../images/aiart/pic04.jpg" alt="" /></span> -->
+								<h2>AIART</h2>
+								<p>This project was part of an independent study I did during the last semester of senior year in high school. After hearing about the first "AI generated artwork" being sold in auction for hundreds of thousands, I was curious about the techniques used and wanted to learn more about Generative Adversarial Networks (GANs) and CNN Visualization. Of course I learn best through doing, so I decided to try and make some "art" of my own. Below is a gallery of some of the artwork that was generated as part of this project, along with a description of the methods used.</p>
+								<hr />
+								<!-- Image -->
+								<section>
+									<h1>Gallery:</h1>
+
+									<h2><strong>CNN Visualization</strong></h2>
+									<h3><strong>Mapping the thoughts of a Neural Network</strong></h3>
+									<p>
+										Some of the most visually interesting artwork was generated through a technique called CNN visualization, which results in an image that maximizes the activations of a certain feature map in a certain layer. On a more intuitive level, we are telling an object detection neural network to "amplify the pattern that you see in this image". We start off with an image of pure noise/static, so we end up with a pretty pure representation of what that feature responds to. We can think of this almost like visualizing what the neural network is thinking of at a certain spot in the network.
+									</p>
+									<p>
+										The images below are the feature visualizations from a VGG19 network pretrained on image net. See if you can spot what patterns/objects the network is activating to! 
+									</p>
+									<div class="box alt">
+										<div class="row gtr-uniform">
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/layer_25_filter_80.jpg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/layer_16_filter_180.jpg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/layer_20_filter_20.jpg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/layer_20_filter_210.jpg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/layer_30_filter_150.jpg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/layer_30_filter_187.jpg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/layer_35_filter_0.jpg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/layer_40_filter_30.jpg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/layer_45_filter_20.jpg" alt="" /></span></div>
+										</div>
+									</div>
+									<h2><strong>Big Gan</strong></h2>
+									<h3><strong>Generating Crime</strong></h3>
+									<p>
+										GANs or Generative Adversarial Networks are a fairly novel technique where we essentially train 2 neural networks:
+										<br>
+										<strong>The Generator</strong> network that attempts to generate images that are close to the training data, and
+										<br>
+										<strong>The Discriminator</strong> network that tries to determine whether or not a given image is "real" (from the training data) or "fake" (generated by the other network).
+									</p>
+									<p>
+										By having the two networks compete against each other, we eventually get results that are increasingly realistic since the generator network gets increasingly better at creating realistic images and the discriminator gets increasingly better at weeding out the fake ones.
+									</p>
+									<p>
+										This section of the art project involved me using an improved version of the original GAN paper (Big GAN) to generate images of "edgy" things. Big GAN implements a number of improvements to a basic GAN, all with the goal of generating higher-resolution and higher-fidelity images (GANs are generally pretty limited in the quality of the images you can produce). I used a Big GAN pre-trained on image-net, and told it to generate images of things we might commonly associate with crime or war. The goal was to explore the question: <i>How do the images we train a network on affect its perception of negative things?</i>
+									</p>
+									<p>
+										In the end, you can see that certain aspects of these objects are closely associated in the neural network. For example, when I told it to generate a ski mask, it also generated eyes, a mouth, and a covered body. This is most likely because all the training data involving ski masks had it on a person's face, but now we know that the GAN recognizes when a ski mask is in a photo it is generally in the context of a covered person.
+									</p>
+									<div class="box alt">
+										<div class="row gtr-uniform">
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/bigGAN/pullupwithaski.png" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/bigGAN/tank2.png" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/bigGAN/gun1.png" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/bigGAN/hammer1.png" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/bigGAN/gasmask2.png" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="../images/aiart/bigGAN/wine1.png" alt="" /></span></div>
+										</div>
+									</div>
+									<h2><strong>Style Transfer CycleGan</strong></h2>
+									<h3><strong>Real life &#8594; Anime, Real life &#8594; Van Gogh, Real life &#8594; Ukiyo-e</strong></h3>
+									<p>
+										CycleGANs are a novel approach for converting images of one style to another (source domain A &#8594; target domain B). However unlike most style transfer methods, CycleGANs don't need paired data to produce good results. As long as you train it on a decent amount of data from domain A and B, even if the data is completely unrelated a CycleGAN will most likely learn a way to transfer from one style to the other. 
+									</p>
+									<p>	
+										CycleGANs work in much the same way as a normal GAN, except now we are running 4 networks:
+										<br>
+										<strong>Generator A &#8594; B</strong> takes an image from the source domain A, and converts it into an image that is similar from the target domain B.
+										<br>
+										<strong>Generator B &#8594; A</strong> does the same as above but reversed.
+										<br>
+										<strong>Discriminator A</strong> tries to discriminate between images generated by Generator B &#8594; A, and the real images from domain A.
+										<br>
+										<strong>Discriminator B</strong> does the same as above but reversed.
+									</p>
+									<p>
+										Adversarial loss alone is not sufficient to produce good images, as it leaves the model under-constrained. It enforces that the generated output be of the appropriate domain, but does not enforce that the input and output are recognizably the same. For example, a generator that output an image y that was an excellent example of that domain, but looked nothing like x, would do well by the standard of the adversarial loss, despite not giving us what we really want.
+									</p>
+									<p>
+										Cycle consistency loss addresses this issue. It relies on the expectation that if you convert an image to the other domain and back again by successively feeding it through both generators, you should get back something similar to what you put in, i.e. feeding the output from Generator B &#8594; A into Generator A &#8594; B should result in something similar to the original B.
+									</p>
+									<p>
+										CycleGANs work really well for on tasks that involve color or texture changes, like day-to-night photo translations or photo-to-painting tasks. However, it normally fails on tasks that require substantial changes in geometry. Below, I attempted to create a "photo to anime" CycleGAN, along with "photo to Van Gogh" and "photo to Ukiyo-e". 
+										<br>
+										The Van Gogh and Ukiyo-e examples turned out really well, however my attempt at anime largely failed as it did require a change to the geometry of the eyes and face (I did manage to get a few good examples, however).
+									</p>
+									<div class="box alt">
+										<div class="row gtr-uniform">
+											<!-- row 1 anime2irl -->
+											<div class="col-3"><span class="image fit"><img src="../images/aiart/000044_real_A.png" alt="" /></span></div>
+											<div class="col-3"><span class="image fit"><img src="../images/aiart/000044_fake_B.png" alt="" /></span></div>
+											<div class="col-3"><span class="image fit"><img src="../images/aiart/dude.png" alt="" /></span></div>
+											<div class="col-3"><span class="image fit"><img src="../images/aiart/dude_fake.png" alt="" /></span></div>
+											<!-- row 2 vangogh -->
+											<div class="col-3"><span class="image fit"><img src="../images/aiart/2014-08-05 09_28_38_real_A.png" alt="" /></span></div>
+											<div class="col-3"><span class="image fit"><img src="../images/aiart/2014-08-05 09_28_38_fake_B.png" alt="" /></span></div>
+											<div class="col-3"><span class="image fit"><img src="../images/aiart/2014-08-02 19_18_15_real_A.png" alt="" /></span></div>
+											<div class="col-3"><span class="image fit"><img src="../images/aiart/2014-08-02 19_18_15_fake_B.png" alt="" /></span></div>
+											<!-- row 3 ukiyoe -->
+											<div class="col-3"><span class="image fit"><img src="../images/aiart/2014-08-11 06_59_41_real_A.png" alt="" /></span></div>
+											<div class="col-3"><span class="image fit"><img src="../images/aiart/2014-08-11 06_59_41_fake_B.png" alt="" /></span></div>
+											<div class="col-3"><span class="image fit"><img src="../images/aiart/2014-08-05 16_20_33_real_A.png" alt="" /></span></div>
+											<div class="col-3"><span class="image fit"><img src="../images/aiart/2014-08-05 16_20_33_fake_B.png" alt="" /></span></div>
+										</div>
+									</div>
+								</section>
+
+						</section>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<p class="copyright">&copy; Artificial Picasso.</p>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>AlphaStone - Ethan Joseph</title>
+		<link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="../images/favicon/favicon-16x16.png">
+		<link rel="manifest" href="../images/favicon/site.webmanifest">
+		<link rel="mask-icon" href="../images/favicon/safari-pinned-tab.svg" color="#5bbad5">
+		<link rel="shortcut icon" href="../images/favicon/favicon.ico">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="msapplication-config" content="../images/favicon/browserconfig.xml">
+		<meta name="theme-color" content="#ffffff">
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<img src="../images/Set_Classic.svg" class="icon">
+						<h1>AlphaStone</h1>
+						<p>Hearthstone AI Player based on AlphaZero</p>
+						<p style="font-size:100%; padding-bottom:0.5em;">Self-taught and everything. They grow so fast.</p>
+						<ul class="icons">
+							<li>
+								<a href="../index.html#projects" target="_top" class="icon solid fa-arrow-left alt">
+									<span class="label">Back</span>
+								</a>
+							</li>
+							<li>
+								<a href="https://github.com/sirmammingtonham/alphastone" target="_blank" class="icon brands fa-github alt">
+									<span class="label">Github</span>
+								</a>
+							</li>
+						</ul>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Content -->
+							<section id="content" class="main">
+								<span class="image main"><img src="../images/alpha.jpg" alt="" /></span>
+								<h2>AlphaStone</h2>
+								<p>
+									Alphastone is a reinforcement learning bot I coded for the trading-card video game Hearthstone. It plays games against itself to train, and uses a Deep Residual Neural Network coupled with Information Set Monte Carlo Tree Search to make decisions. This page briefly describes how Alphastone works, along with some of the challenges I had while developing it.
+								</p>
+								<p>
+									At the end of my junior year, as I was wrapping up the online deep learning course at fast.ai, I heard about Google’s AlphaZero: an AI that learned to play the board game Go completely on its own and proceeded to beat the world’s top player. I was fascinated and wanted to learn more about it, since it was video game bots that got me interested with AI in the first place.
+								</p>
+								<p>
+									My only previous experience with python (and coding in general) was through the online course, but since I learn best through doing, I decided to dive in and implement AlphaZero on my own. However, I knew next to nothing about Go, so I decided to apply the same algorithm to something I played a lot back then: the video game Hearthstone. 
+								</p>
+								<p>
+									In Hearthstone, each player has a 30-card deck. Players can summon up to 7 "monsters" at a time and play spells that affect the state of the game. Each player has 30 health points, and in order to win you must attack the opponent with your monsters until their health reaches 0.
+								</p>
+								<hr />
+								<h2><strong>Overview</strong></h2>
+								<p>
+									The AlphaZero algorithm has 3 main steps: 
+									<ol>
+										<li>
+											Make the bot play hundreds of games against itself and store the game histories as examples.  (Decisions are made with a neural network and an algorithm called MCTS, which simulates and explores future states of the game) 
+										</li>
+										<li>
+											A neural network is then trained on the set of examples from step 1 to correctly predict the outcome of the game and the best possible actions from current state.
+										</li>
+										<li>
+											This new neural net plays a hundred games against the old neural net, and if it wins 60% of the time it is declared the new best player, otherwise the old player is kept. Then the process repeats. 
+										</li>
+									</ol>
+								</p>
+								<p>
+									I’ve written a more in-depth explanation about the steps below.
+								</p>
+								<hr />
+								<h3><strong>Action Representation:</strong></h3>
+								<p>
+									Originally, I didn't know how to make the neural network’s output encompass all possible actions, since I thought there were too many combinations. After reading the AlphaZero paper more closely, I realized that I could model all actions on a 2-dimensional matrix, where one axis is possible actions and the other is possible targets for each action. This led to a 21x18 output that encompasses all possible actions. 
+								</p>
+								<h3><strong>Deep Residual Neural Network:</strong></h3>
+								<p>
+									I used the PyTorch deep learning library for this project. The neural network is essentially a downscaled version of the one Google used for AlphaZero. It consists of many residual layers and splits off into two fully connected “heads”, one which outputs a probability distribution over all actions (21x18), and another which outputs a winning likelihood value for the current state (1 if winning and -1 if losing) for use in MCTS. The input is a set of information about the current game.
+								</p>
+								<p>
+									Since the online courses I took always gave us neural net architectures, I never had to develop one on my own, and I didn't understand how to construct one with PyTorch. It took me a while to understand how convolution sizes were calculated and how to go from a convolutional layer to a fully connected one. After a bit of trial and error and playing with the network sizes, I learned how to use PyTorch and got a functional network.
+								</p>
+								<h3><strong>Information Set Monte Carlo Tree Search:</strong></h3>
+								<p>
+									To increase the likelihood that actions taken lead to winning the game, Alphastone also uses Monte Carlo Tree Search. MCTS simulates the playout of the game and updates the sequence of moves taken with the result of that playout. Alphastone then takes the move that is most simulated to get closer to winning. At each new state, the neural network is called to give action probabilities and state values, which speed up the search.
+								</p>
+								<p>
+									Hearthstone is an imperfect information game, where some information is always hidden. As a result, I had to do research into a variation of MCTS, called ISMCTS or Information Set Monte Carlo Tree Search.  This algorithm takes all hidden information and randomizes it before every new search so it remains hidden, and then MCTS is called on a set of information about the state. I had to delve into the Hearthstone simulator's source code to find out how decks and hands were stored so I could randomize them.
+								</p>
+								<h3><strong>Self-Play:</strong></h3>
+								<p>
+									To train the neural network, Alphastone plays hundreds of games against itself, stores the history, and trains its neural network from these examples. This new neural network is pitted against the old one, and if it wins 60% of the time, we discard the old one; otherwise, we keep the old one and the process repeats. 
+								</p>
+								<h3><strong>Experiments:</strong></h3>
+								<p>
+									After over two months of consistent work on the project (and about 4 months overall), I was finally able to train and play against the AI. Over the course of the project I was met with over 100 code errors, everything from indentation errors to maximum recursion depth exceeded. 
+								</p>
+								<p>
+									I trained Alphastone for various lengths of time and with different hyper-parameters over the course of 2 weeks, but my best model came from just 3 days of training. I made a quick text-based function to allow for play against the trained models, and to my surprise it almost beat me during one of the games! Granted, my luck in that match was terrible, but it was still impressive. 
+								</p>
+								<p>
+									If you would like to see more, you can check out the github repository below!
+								</p>
+								<hr/>
+								<a class="embedly-card" data-card-controls="0" href="https://github.com/sirmammingtonham/alphastone">sirmammingtonham/alphastone</a>
+								<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+							</section>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<p class="copyright">&copy; Hard work and stack exchange.</p>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>
