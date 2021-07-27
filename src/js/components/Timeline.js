@@ -228,12 +228,12 @@ export default class Timeline {
 
         this.videoCount = this.videoItems.length
 
-        this.contactSection = new Section({
+        this.resumeSection = new Section({
             timeline: timeline,
-            section: 'contact'
+            section: 'resume'
         })
-        this.contactSection.visible = false
-        this.scene.add( this.contactSection )
+        this.resumeSection.visible = false
+        this.scene.add( this.resumeSection )
 
         this.linkGroup = new THREE.Group()
 
@@ -520,18 +520,18 @@ export default class Timeline {
 
         e.preventDefault()
 
-        if( this.contactSection.isOpen ) return this.closeContact()
+        if( this.resumeSection.isOpen ) return this.closeContact()
 
         this.dom.cursor.dataset.cursor = 'cross'
 
-        this.contactSection.visible = true
-        this.contactSection.isOpen = true
+        this.resumeSection.visible = true
+        this.resumeSection.isOpen = true
         this.c.allowScrolling = false
         this.linkUnderlineMat.visible = true
         this.linkUnderlineMat.opacity = 0.3
 
         TweenMax.to( this.camera.position, 2, {
-            y: this.contactSection.position.y * this.scene.scale.y,
+            y: this.resumeSection.position.y * this.scene.scale.y,
             ease: 'Expo.easeInOut',
             onComplete: () => {
                 this.timeline.visible = false
@@ -543,13 +543,13 @@ export default class Timeline {
     closeContact() {
 
         this.timeline.visible = true
-        this.contactSection.isOpen = false
+        this.resumeSection.isOpen = false
 
         TweenMax.to( this.camera.position, 2, {
             y: 0,
             ease: 'Expo.easeInOut',
             onComplete: () => {
-                this.contactSection.visible = false
+                this.resumeSection.visible = false
                 this.c.allowScrolling = true
                 this.linkUnderlineMat.visible = false
                 this.linkUnderlineMat.opacity = 0
@@ -585,7 +585,7 @@ export default class Timeline {
 
         this.c.holdingMouseDown = true
 
-        if( this.contactSection.isOpen ) {
+        if( this.resumeSection.isOpen ) {
 
             if( this.linkIntersect.length > 0 ) {
                 if( this.linkIntersect[0].object.onClick )
@@ -669,7 +669,7 @@ export default class Timeline {
         this.raycaster.setFromCamera( this.mouse, this.camera )
 
         // raycast for items when in timeline mode
-        if( !this.contactSection.isOpen && !this.itemOpen && !this.c.holdingMouseDown ) {
+        if( !this.resumeSection.isOpen && !this.itemOpen && !this.c.holdingMouseDown ) {
 
             if( this.activeMonth === 'end' ) {
 
@@ -703,7 +703,7 @@ export default class Timeline {
         }
 
         // raycast for item link
-        if( !this.contactSection.isOpen && this.itemOpen && this.itemOpen.data.link ) {
+        if( !this.resumeSection.isOpen && this.itemOpen && this.itemOpen.data.link ) {
 
             this.linkIntersect = this.raycaster.intersectObject( this.linkBox )
             
@@ -715,9 +715,9 @@ export default class Timeline {
 
         }
 
-        if( this.contactSection.isOpen ) {
+        if( this.resumeSection.isOpen ) {
 
-            this.linkIntersect = this.raycaster.intersectObject( this.contactSection.linkBox )
+            this.linkIntersect = this.raycaster.intersectObject( this.resumeSection.linkBox )
             
             if ( this.linkIntersect.length > 0 ) {
                 this.dom.cursor.dataset.cursor = 'eye'
