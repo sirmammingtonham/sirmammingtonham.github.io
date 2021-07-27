@@ -4,6 +4,7 @@ import { MeshLine, MeshLineMaterial } from "three.meshline";
 import greenscreen from "../shaders/greenscreen.frag";
 import vert from "../shaders/default.vert";
 import { TweenMax } from "gsap";
+import Item from './Item'
 
 export default class Section extends THREE.Group {
   constructor(opts = { timeline, section }) {
@@ -76,13 +77,6 @@ export default class Section extends THREE.Group {
     serifText2.position.set(-60, -200, -500);
     this.add(serifText2);
 
-    // let material = new THREE.MeshBasicMaterial( { map: this.timeline.assets.textures['intro']['intro.png'], transparent: true } )
-    // let geom = new THREE.PlaneGeometry( 1, 1 )
-    // let publicationsio = new THREE.Mesh( geom, material )
-    // publicationsio.scale.set( 613, 353, 1 )
-    // publicationsio.position.set( 0, 0, -250 )
-    // this.add( publicationsio )
-
     this.addIntroBadge();
   }
 
@@ -124,7 +118,7 @@ export default class Section extends THREE.Group {
   }
 
   createEndSection() {
-    let sansTextGeom = new THREE.TextGeometry("SEE YOU NEXT YEAR", {
+    let sansTextGeom = new THREE.TextGeometry("THANKS FOR STOPPING BY", {
       font: this.timeline.assets.fonts["SuisseIntl-Bold"],
       size: 60,
       height: 0,
@@ -213,92 +207,21 @@ export default class Section extends THREE.Group {
     this.position.set(0, 2000 / this.timeline.scene.scale.y, 0);
     this.visible = false;
 
-    // let sansTextGeom = new THREE.TextGeometry("RESUME", {
-    //   font: this.timeline.assets.fonts["SuisseIntl-Bold"],
-    //   size: 10,
-    //   height: 0,
-    //   curveSegments: 4,
-    // }).center();
-
-    // let sansText = new THREE.Mesh(sansTextGeom, this.timeline.textMat);
-    // sansText.position.set(0, 60, 0);
-    // this.add(sansText);
-
-    // let material = new THREE.MeshBasicMaterial( { map: this.timeline.assets.textures['intro']['resume.png'], transparent: true } )
-    // let geom = new THREE.PlaneGeometry( 1, 1 )
-    // let publicationsio = new THREE.Mesh( geom, material )
-    // publicationsio.scale.set( 613, 353, 1 )
-    // // publicationsio.position.set( 0, 0, -250 )
-    // this.add( publicationsio )
-
-    // let lineOneGeom = new THREE.TextGeometry(
-    //   "Let’s make 2019 just as memorable with more",
-    //   {
-    //     font: this.timeline.assets.fonts["Schnyder L"],
-    //     size: 30,
-    //     height: 0,
-    //     curveSegments: 6,
-    //   }
-    // ).center();
-
-    // let lineOne = new THREE.Mesh(lineOneGeom, this.timeline.contactTextMat);
-    // lineOne.position.set(0, 0, 0);
-    // this.add(lineOne);
-
-    // let lineTwoGeom = new THREE.TextGeometry(
-    //   "amazing talent and exciting new projects.",
-    //   {
-    //     font: this.timeline.assets.fonts["Schnyder L"],
-    //     size: 30,
-    //     height: 0,
-    //     curveSegments: 6,
-    //   }
-    // ).center();
-
-    // let lineTwo = new THREE.Mesh(lineTwoGeom, this.timeline.contactTextMat);
-    // lineTwo.position.set(0, -45, 0);
-    // this.add(lineTwo);
-
-    let item = new Item({
-      timeline: this.timeline,
-      texture: this.timeline.assets.textures["intro"]["intro.png"],
-      data: {
-        caption: "We got inspired at the Awwwwards conference in Berlin",
-        link: "",
-      },
-      month: "resume",
-      itemIndex: 0,
-      itemIndexTotal: 0,
-    });
-
-    this.add(item);
-
-    let emailGeom = new THREE.TextGeometry("hello@craftedbygc.com", {
-      font: this.timeline.assets.fonts["Schnyder L"],
-      size: 36,
-      height: 0,
-      curveSegments: 6,
-    }).center();
-
-    let email = new THREE.Mesh(emailGeom, this.timeline.textMat);
-    email.position.set(0, -140, 0);
-    this.add(email);
-
-    let emailUnderline = new THREE.Mesh(
-      new THREE.PlaneBufferGeometry(467, 1),
-      this.timeline.linkUnderlineMat
-    );
-    emailUnderline.position.set(0, -172, 0);
-    this.add(emailUnderline);
+    let material = new THREE.MeshBasicMaterial( { map: this.timeline.assets.textures['resume']['resume.png'], transparent: true } )
+    let geom = new THREE.PlaneGeometry( 1, 1 )
+    let resume = new THREE.Mesh( geom, material )
+    resume.scale.set( 612, 792, 1 )
+    resume.position.set( 0, 0, 0 )
+    this.add( resume )
 
     // for raycasting so it doesn't just pick up on letters
     this.linkBox = new THREE.Mesh(
-      new THREE.PlaneBufferGeometry(490, 60),
+      new THREE.PlaneBufferGeometry(612, 792),
       new THREE.MeshBasicMaterial({ alphaTest: 0, visible: false })
     );
-    this.linkBox.position.set(0, -140, 1);
+    this.linkBox.position.set(0, 0, 1);
     this.linkBox.onClick = () => {
-      window.open("mailto:hello@craftedbygc.com", "_blank");
+      window.open("assets/resume/resume.pdf", "_blank");
     };
     this.add(this.linkBox);
   }

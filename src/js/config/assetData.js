@@ -46,41 +46,46 @@ const assetData = {
     },
   },
   projects: {
-    "camera-culture.jpg": {
-      caption: "Concept work for the Get The Picture project for IAT",
-      link: "https://www.getthepicture.tours/",
-    },
-    "ezgif.com-gif-to-mp4 (10).mp4": {
-      caption: "Experimenting with some hero image transitions",
-      link: "https://dribbble.com/shots/4128126-Carousel-Transitions",
-    },
-    "ezgif.com-gif-to-mp4 (12).mp4": {
-      caption: "Entries for the Spaced competition",
+    "dronee.jpg": {
+      caption: "Attempt at Autonomous Drone Flight",
       link: "",
     },
-    "fila_dribbble.jpg": {
-      caption: "Concept for the new Fila clothing range",
-      link: "https://dribbble.com/shots/4197326-Fila-Spring-Summer",
-    },
-    "fullsize.mp4": {
-      caption: "Image hover effect experimentation",
-      link: "https://dribbble.com/shots/4228572-Photo-Gallery-Hover-Idea",
-    },
-    "houseofplants_ar.mp4": {
-      caption: "House of plants AR app development",
+    "futureMAG.jpg": {
+      caption: "futureMAG: AI Generated Magazine",
       link: "",
     },
-    "nz.jpg": {
-      caption: "Surf Guide: New Zealand",
+    "guitar.jpg": {
+      caption: "3d Printed Guitar and Amp",
       link: "",
     },
-    "surf_fullsize.mp4": {
-      caption: "Distortion scroll effects",
-      link: "https://dribbble.com/shots/4273785-Surf-Guide-Scroll-Distort-Effect",
+    "worldwide.png": {
+      caption: "WorldWide: an Exploration in the Internet as a Ruin",
+      link: "https://sirmammingtonham.github.io/worldwide/web/index.html",
     },
-    "surf_mob_fullsize.mp4": {
-      caption: "",
-      link: "",
+    "fakeblock.png": {
+      caption: "fakeBlock: Fake News Blocking Browser Extension",
+      link: "https://github.com/sirmammingtonham/fakeBlock",
+    },
+    "shid_hearthstone.png": {
+      caption: "yeeb bot: Music, Hearthstone, and Meme Bot for Discord",
+      link: "https://github.com/sirmammingtonham/yeeb",
+    },
+    "alpha.jpg": {
+      caption: "AlphaStone: Self-Taught Hearthstone AI Agent",
+      link: "https://github.com/sirmammingtonham/alphastone",
+    },
+    "smartrider.jpg": {
+      caption: "smartrider: All-In-One RPI Transportation App",
+      link: "https://github.com/sirmammingtonham/smartrider",
+    },
+    "emobot.png": {
+      caption: "emobot: An Emotionally Intelligent Chatbot",
+      link: "https://emotion-chatbot.herokuapp.com/",
+    },
+    "spellcraft.mp4": {
+      caption:
+        "Skyrim Spell Craft Functions SE: Library for Skyrim modders to add spell crafting",
+      link: "https://www.nexusmods.com/skyrimspecialedition/mods/37493",
     },
   },
   publications: {
