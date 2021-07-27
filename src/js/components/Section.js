@@ -36,7 +36,7 @@ export default class Section extends THREE.Group {
 
     createIntroSection() {
 
-        let sansTextGeom = new THREE.TextGeometry( 'GAME HISTORY THROUGH', {
+        let sansTextGeom = new THREE.TextGeometry( 'COMPSCI STUDENT\nAI ENTHUSIAST\nMAKER', {
             font: this.timeline.assets.fonts['SuisseIntl-Bold'],
             size: 60,
             height: 0,
@@ -44,25 +44,38 @@ export default class Section extends THREE.Group {
         } ).center()
 
         let sansText = new THREE.Mesh( sansTextGeom, this.timeline.textMat )
+        // sansText.position.set( 0, 150, 0 )
         this.add( sansText )
 
-        let serifTextGeom = new THREE.TextGeometry( 'SOUND', {
+
+        let serifTextGeom = new THREE.TextGeometry( 'ETHAN', {
             font: this.timeline.assets.fonts['bruh_outline'],
-            size: 600,
+            size: 400,
             height: 0,
             curveSegments: 15
         } ).center()
 
         let serifText = new THREE.Mesh( serifTextGeom, this.timeline.textOutlineMat )
-        serifText.position.set( 0, 0, -500 )
+        serifText.position.set( 0, 250, -500 )
         this.add( serifText )
 
-        let material = new THREE.MeshBasicMaterial( { map: this.timeline.assets.textures['intro']['intro.png'], transparent: true } )
-        let geom = new THREE.PlaneGeometry( 1, 1 )
-        let mario = new THREE.Mesh( geom, material )
-        mario.scale.set( 613, 353, 1 )
-        mario.position.set( 0, 0, -250 )
-        this.add( mario )
+        let serifTextGeom2 = new THREE.TextGeometry( 'JOSEPH', {
+            font: this.timeline.assets.fonts['bruh_outline'],
+            size: 400,
+            height: 0,
+            curveSegments: 15
+        } ).center()
+
+        let serifText2 = new THREE.Mesh( serifTextGeom2, this.timeline.textOutlineMat )
+        serifText2.position.set( -60, -200, -500 )
+        this.add( serifText2 )
+
+        // let material = new THREE.MeshBasicMaterial( { map: this.timeline.assets.textures['intro']['intro.png'], transparent: true } )
+        // let geom = new THREE.PlaneGeometry( 1, 1 )
+        // let mario = new THREE.Mesh( geom, material )
+        // mario.scale.set( 613, 353, 1 )
+        // mario.position.set( 0, 0, -250 )
+        // this.add( mario )
 
         this.addIntroBadge()
 
@@ -72,15 +85,15 @@ export default class Section extends THREE.Group {
 
         this.badge = new THREE.Group()
 
-        let texture = new THREE.TextureLoader().load( 'images/highlights.png' )
-        texture.magFilter = texture.minFilter = THREE.LinearFilter
-        let material = new THREE.MeshBasicMaterial( { map: texture, transparent: true } )
-        let geom = new THREE.PlaneGeometry( 1, 1 )
-        this.circle = new THREE.Mesh( geom, material )
-        this.circle.scale.set( 200, 200, 1 )
-        this.badge.add( this.circle )
+        // let texture = new THREE.TextureLoader().load( 'images/highlights.png' )
+        // texture.magFilter = texture.minFilter = THREE.LinearFilter
+        // let material = new THREE.MeshBasicMaterial( { map: texture, transparent: true } )
+        // let geom = new THREE.PlaneGeometry( 1, 1 )
+        // this.circle = new THREE.Mesh( geom, material )
+        // this.circle.scale.set( 200, 200, 1 )
+        // this.badge.add( this.circle )
 
-        let serifTextGeom = new THREE.TextGeometry( 'Scroll or hold mouse to advance', {
+        let serifTextGeom = new THREE.TextGeometry( 'Scroll or hold mouse to advance.', {
             font: this.timeline.assets.fonts['Schnyder L'],
             size: 26,
             height: 0,

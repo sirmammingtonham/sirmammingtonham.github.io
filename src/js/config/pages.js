@@ -92,4 +92,4 @@ const pages = {
 
 }
 
-export default sections
+export default pages

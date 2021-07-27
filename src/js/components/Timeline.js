@@ -288,7 +288,7 @@ export default class Timeline {
             }
         })
 
-        TweenMax.to( [ '.say-hello', '.logo', '.social' ], 2, {
+        TweenMax.to( [ '.resume', '.logo', '.social' ], 2, {
             y: 0,
             delay: 1,
             ease: 'Expo.easeInOut'
@@ -847,7 +847,7 @@ export default class Timeline {
 
             TweenMax.to( this.dom.mainSvgs, 1, { fill: `#${interfaceColor}`, ease: 'Power4.easeOut' } )
             TweenMax.to( [ this.dom.cursorSvgs, this.dom.compassSvg ], 1, { stroke: `#${interfaceColor}`, ease: 'Power4.easeOut' } )
-            TweenMax.to( '.say-hello .underline', 1, { borderBottomColor: `#${interfaceColor}`, ease: 'Power4.easeOut' } )
+            TweenMax.to( '.resume .underline', 1, { borderBottomColor: `#${interfaceColor}`, ease: 'Power4.easeOut' } )
 
             document.querySelector("meta[name=theme-color]").setAttribute("content", '#' + bgColor.getHexString() )
 
@@ -916,11 +916,11 @@ export default class Timeline {
             if( !this.c.isMobile && Math.abs( delta ) < 8 ) this.handleVideos()
             if( !this.easterEggEnabled ) this.changeColours()
 
-            if( this.timeline.position.z < 700 ) {
-                TweenMax.set( this.sections['intro'].circle.rotation, {
-                    z: '+=' + delta * 0.005
-                })
-            }
+            // if( this.timeline.position.z < 700 ) {
+            //     TweenMax.set( this.sections['intro'].circle.rotation, {
+            //         z: '+=' + delta * 0.005
+            //     })
+            // }
 
             if( Math.abs( delta ) > 0.1 ) {
                 this.c.scrolling = true
@@ -980,7 +980,7 @@ export default class Timeline {
             this.dom.compass.addEventListener( 'click', this.resetOrientation, false )
         }
 
-        document.querySelector( '.say-hello' ).addEventListener( 'click', this.openContact, false )
+        document.querySelector( '.resume' ).addEventListener( 'click', this.openContact, false )
         if( this.enableLoader ) document.querySelector( '.enter' ).addEventListener( 'click', this.moveToStart, false )
 
         this.gesture = new TinyGesture( this.renderer.domElement, { mouseSupport: false } )

@@ -31,11 +31,11 @@ export default class AssetLoader {
 
         let preload = true
 
-        for( let section in this.assetList ) {
+        for( let month in this.assetList ) {
 
-            // preload = section === 'intro' ? true : false
+            // preload = month === 'intro' ? true : false
 
-            this.assetList[section].forEach( filename => {
+            this.assetList[month].forEach( filename => {
 
                 if( ~filename.indexOf( '.mp4' ) ) {
 
@@ -49,19 +49,19 @@ export default class AssetLoader {
                     video.setAttribute('webkit-playsinline', true)
                     video.setAttribute('playsinline', true)
                     video.preload = 'metadata'
-                    video.src = `assets/${section}/${filename}`
+                    video.src = `assets/${month}/${filename}`
                     document.body.appendChild( video )
                     video.load() // must call after setting/changing source
 
                     if( preload ) {
 
                         assetLoadPromises.push( new Promise( (resolve, reject) => {
-                            this.videoPromise( video, section, filename, resolve )
+                            this.videoPromise( video, month, filename, resolve )
                         } ) )
 
                     } else {
 
-                        this.createVideoTexture( video, section, filename, false )
+                        this.createVideoTexture( video, month, filename, false )
 
                     }
 
@@ -70,12 +70,12 @@ export default class AssetLoader {
                     if( preload ) {
 
                         assetLoadPromises.push( new Promise( resolve => {
-                            imageLoader.load( `assets/${section}/${filename}`, texture => this.createImageTexture( texture, section, filename, resolve ) )
+                            imageLoader.load( `assets/${month}/${filename}`, texture => this.createImageTexture( texture, month, filename, resolve ) )
                         }))
 
                     } else {
 
-                        this.createImageTexture( false, section, filename, false )
+                        this.createImageTexture( false, month, filename, false )
 
                     }
 
@@ -117,28 +117,28 @@ export default class AssetLoader {
 
     }
 
-    videoPromise( video, section, filename, resolve, retry ) {
+    videoPromise( video, month, filename, resolve, retry ) {
 
         if( retry ) video.load()
 
-        if( !this.isMobile) video.oncanplaythrough = () => this.createVideoTexture( video, section, filename, resolve )
+        if( !this.isMobile) video.oncanplaythrough = () => this.createVideoTexture( video, month, filename, resolve )
         else {
 
             video.onloadeddata = () => {
                 video.onerror = null
-                this.createVideoTexture( video, section, filename, resolve )
+                this.createVideoTexture( video, month, filename, resolve )
             }
 
             video.onerror = () => {
                 video.onloadeddata = null
-                this.videoPromise( video, section, filename, resolve, true )
+                this.videoPromise( video, month, filename, resolve, true )
             }
 
         }
 
     }
 
-    createImageTexture( texture, section, filename, resolve ) {
+    createImageTexture( texture, month, filename, resolve ) {
         
         // if preloaded
         if( resolve ) {
@@ -147,18 +147,18 @@ export default class AssetLoader {
             texture.needsUpdate = true
             this.renderer.setTexture2D( texture, 0 )
 
-            texture.name = `${section}/${filename}`
+            texture.name = `${month}/${filename}`
             texture.mediaType = 'image'
             texture.anisotropy = this.renderer.capabilities.getMaxAnisotropy()
 
-            if( !this.assets.textures[ section ] ) this.assets.textures[ section ] = {}
-            this.assets.textures[ section ][ filename ] = texture
+            if( !this.assets.textures[ month ] ) this.assets.textures[ month ] = {}
+            this.assets.textures[ month ][ filename ] = texture
         
             resolve( texture )
 
         } else {
 
-            let texture = new THREE.TextureLoader().load( `assets/${section}/${filename}`, texture => {
+            let texture = new THREE.TextureLoader().load( `assets/${month}/${filename}`, texture => {
 
                 texture.size = new THREE.Vector2( texture.image.width / 2, texture.image.height / 2 )
                 texture.needsUpdate = true
@@ -167,22 +167,22 @@ export default class AssetLoader {
             } )
             texture.size = new THREE.Vector2( 10, 10 )
 
-            texture.name = `${section}/${filename}`
+            texture.name = `${month}/${filename}`
             texture.mediaType = 'image'
             texture.anisotropy = this.renderer.capabilities.getMaxAnisotropy()
 
-            if( !this.assets.textures[ section ] ) this.assets.textures[ section ] = {}
-            this.assets.textures[ section ][ filename ] = texture
+            if( !this.assets.textures[ month ] ) this.assets.textures[ month ] = {}
+            this.assets.textures[ month ][ filename ] = texture
 
         }
 
     }
 
-    createVideoTexture( video, section, filename, resolve, reject ) {
+    createVideoTexture( video, month, filename, resolve, reject ) {
 
         let texture = new THREE.VideoTexture( video )
         texture.minFilter = texture.magFilter = THREE.LinearFilter
-        texture.name = `${section}/${filename}`
+        texture.name = `${month}/${filename}`
         texture.mediaType = 'video'
         texture.anisotropy = this.renderer.capabilities.getMaxAnisotropy()
 
@@ -214,8 +214,8 @@ export default class AssetLoader {
 
         }
 
-        if( !this.assets.textures[ section ] ) this.assets.textures[ section ] = {}
-        this.assets.textures[ section ][ filename ] = texture
+        if( !this.assets.textures[ month ] ) this.assets.textures[ month ] = {}
+        this.assets.textures[ month ][ filename ] = texture
 
     }
 

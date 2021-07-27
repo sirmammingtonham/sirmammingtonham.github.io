@@ -4,7 +4,7 @@ import vert from '../shaders/default.vert'
 
 export default class Item extends THREE.Group {
 
-    constructor( opts = { timeline, texture, data, section, itemIndex, itemIndexTotal } ) {
+    constructor( opts = { timeline, texture, data, month, itemIndex, itemIndexTotal } ) {
     
         super()
         Object.assign( this, opts )
