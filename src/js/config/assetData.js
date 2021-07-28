@@ -1,5 +1,18 @@
 const assetData = {
-  about: {},
+  about: {
+    "me.jpg": {
+      caption: `
+In my free time, you can catch me:
+• Playing video games
+• Playing tennis or spikeball
+• Rock climbing
+• Learning guitar
+• Reading One Piece or something
+• Hiking or camping
+• Cooking`,
+      link: "",
+    },
+  },
   projects: {
     "smartrider.png": {
       caption: "smartrider: All-In-One RPI Transportation App",
@@ -14,8 +27,7 @@ const assetData = {
       link: "https://emotion-chatbot.herokuapp.com/",
     },
     "spellcraft.mp4": {
-      caption:
-        "Skyrim Spell Craft Functions SE: Skyrim Spellcrafting Mod",
+      caption: "Skyrim Spell Craft Functions SE: Skyrim Spellcrafting Mod",
       link: "https://www.nexusmods.com/skyrimspecialedition/mods/37493",
     },
     "futureMAG.jpg": {

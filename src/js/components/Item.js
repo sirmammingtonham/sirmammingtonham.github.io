@@ -4,7 +4,7 @@ import vert from "../shaders/default.vert";
 
 export class ImageItem extends THREE.Group {
   constructor(
-    opts = { timeline, texture, data, page, itemIndex, itemIndexTotal }
+    opts = { timeline, texture, data, page, itemIndex, itemIndexTotal, x, y, z }
   ) {
     super();
     Object.assign(this, opts);
@@ -47,7 +47,7 @@ export class ImageItem extends THREE.Group {
       }
     };
 
-    let align = this.itemIndexTotal % 4,
+    let align = (this.itemIndexTotal ?? 0) % 4,
       pos = new THREE.Vector2();
 
     if (align === 0) pos.set(-350, 350); // bottom left
@@ -56,8 +56,13 @@ export class ImageItem extends THREE.Group {
     if (align === 3) pos.set(-350, -350); // top left
 
     this.align = align;
-    this.position.set(pos.x, pos.y, this.itemIndex * -300 - 200);
-    this.origPos = new THREE.Vector2(pos.x, pos.y);
+    this.position.set(
+      this.x ?? pos.x,
+      this.y ?? pos.y,
+      this.z ?? this.itemIndex * -300 - 200
+    );
+
+    this.origPos = new THREE.Vector2(this.x ?? pos.x, this.y ?? pos.y);
     this.openPos = new THREE.Vector2(0, 0);
 
     this.add(this.mesh);
@@ -92,7 +97,9 @@ export class ImageItem extends THREE.Group {
 }
 
 export class TextItem extends THREE.Group {
-  constructor(opts = { timeline, text, font, size, data, page, x, y, z }) {
+  constructor(
+    opts = { timeline, text, font, size, data, page, x, y, z, isFancy }
+  ) {
     super();
     Object.assign(this, opts);
     this.isText = true;
@@ -130,26 +137,28 @@ export class TextItem extends THREE.Group {
       visible: false,
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-    this.mesh.scale.set(textSize.x, textSize.y, 1);
 
-    // this.align = -1; //align
-    this.position.set(this.x, this.y, this.z);
-    this.origPos = new THREE.Vector3(this.x, this.y, this.z);
-    // this.openPos = new THREE.Vector3(
-    //   this.openX ?? 0,
-    //   this.openY ?? 0,
-    //   this.openZ ?? 0
-    // );
-    if (this.underline) {
-      this.underline = new THREE.Mesh(
+    this.mesh.scale.set(
+      textSize.x,
+      this.isFancy ? textSize.y + 250 : textSize.y,
+      1
+    );
+
+    // case for fancy text (i.e. not the icons)
+    if (this.isFancy) {
+      this.mesh.position.set(0, -100, 0);
+      let underline = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(textSize.x, 1),
         this.timeline.textItemUnderlineMat
       );
-      this.underline.position.set(0, -40, 0);
+      underline.position.set(0, -40, 10);
+      this.add(underline);
     }
 
+    this.position.set(this.x, this.y, this.z);
+    this.origPos = new THREE.Vector3(this.x, this.y, this.z);
+
     this.add(this.mesh);
-    this.add(this.underline);
 
     this.addCaption();
 
@@ -169,7 +178,10 @@ export class TextItem extends THREE.Group {
       }).center();
 
       this.caption = new THREE.Mesh(captionGeom, this.timeline.captionTextMat);
-      this.caption.position.set(0, -this.mesh.scale.y / 2 - 50, 0);
+      let textSize = new THREE.Vector3();
+      captionGeom.boundingBox.getSize(textSize);
+
+      this.caption.position.set(0, -textSize.y / 2 - 75, 0);
       this.caption.visible = false;
 
       this.add(this.caption);

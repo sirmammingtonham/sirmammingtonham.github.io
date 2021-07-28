@@ -203,38 +203,13 @@ export default class Timeline {
     this.itemMeshes = []; // array for raycasting mouse
     this.videoItems = [];
 
-    let itemIndexTotal = 0,
-      nextPagePos = 0;
+    let nextPagePos = 0;
 
     for (let page in this.pages) {
       this.sections[page] = new Section({
         timeline: timeline,
         section: page,
       });
-
-      if (page !== "intro" && page !== "end") {
-        let itemIndex = 0,
-          id;
-
-        // add items
-        this.assetList[page].forEach((filename) => {
-          id = `${page}/${filename}`;
-
-          this.items[id] = new ImageItem({
-            timeline: this,
-            texture: this.assets.textures[page][filename],
-            data: this.assetData[page][filename],
-            page: page,
-            itemIndex: itemIndex,
-            itemIndexTotal: itemIndexTotal,
-          });
-
-          this.sections[page].add(this.items[id]);
-
-          itemIndex++;
-          itemIndexTotal++;
-        });
-      }
 
       let bbox = new THREE.Box3().setFromObject(this.sections[page]);
 
@@ -353,12 +328,6 @@ export default class Timeline {
     }
 
     let posOffset = this.sections[this.activePage].position.z;
-    console.log({
-      z:
-        -(posOffset - -item.position.z) +
-        (this.c.globalScale < 0.5 ? 450 : 300),
-      pos: item.position,
-    });
 
     if (item.page !== this.activePage) {
       posOffset =
@@ -368,13 +337,14 @@ export default class Timeline {
 
     TweenMax.to(item.position, 1.5, {
       x: 0,
-      y: 0,
+      y: item.isText ? 100 : 0,
       ease: "Expo.easeInOut",
       onComplete: () => {
         this.itemAnimating = false;
         this.dom.cursor.dataset.cursor = "cross";
       },
     });
+    console.log(item.position)
 
     TweenMax.to(item.uniforms.progress, 1.5, {
       value: 1,
@@ -426,7 +396,7 @@ export default class Timeline {
           z: -100,
         },
         {
-          z: 0,
+          z: 50,
           delay: 0.2,
           ease: "Expo.easeInOut",
           onStart: () => {

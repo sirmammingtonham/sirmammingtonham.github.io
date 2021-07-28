@@ -19,8 +19,8 @@ export default class Section extends THREE.Group {
         this.createAboutSection();
         break;
       }
-      case "end": {
-        this.createEndSection();
+      case "projects": {
+        this.createProjectsSection();
         break;
       }
       case "resume": {
@@ -41,6 +41,10 @@ export default class Section extends THREE.Group {
       }
       case "contact": {
         this.createContactSection();
+        break;
+      }
+      case "end": {
+        this.createEndSection();
         break;
       }
       default: {
@@ -155,7 +159,7 @@ export default class Section extends THREE.Group {
       font: "SuisseIntl-Bold",
       size: 26,
       x: 0,
-      y: 0,
+      y: -60,
       z: -700,
     });
     this.addText({
@@ -163,7 +167,7 @@ export default class Section extends THREE.Group {
       font: "Suisse Intl",
       size: 26,
       x: 0,
-      y: -120,
+      y: -180,
       z: -700,
     });
     // this.addText({
@@ -191,17 +195,42 @@ export default class Section extends THREE.Group {
     //   z: -1200,
     // });
 
-    let texture = new THREE.TextureLoader().load("assets/about/me.jpg");
-    texture.magFilter = texture.minFilter = THREE.LinearFilter;
-    let material = new THREE.MeshBasicMaterial({
-      map: texture,
-      transparent: true,
+    this.timeline.items["about/me.jpg"] = new ImageItem({
+      timeline: this.timeline,
+      texture: this.timeline.assets.textures[this.section]["me.jpg"],
+      data: this.timeline.assetData[this.section]["me.jpg"],
+      page: this.section,
+      x: 0,
+      y: 250,
+      z: -900,
     });
-    let geom = new THREE.PlaneGeometry(1, 1);
-    let image = new THREE.Mesh(geom, material);
-    image.scale.set(300, 300, 1);
-    image.position.set(0, -300, -200);
-    this.add(image);
+
+    this.add(this.timeline.items["about/me.jpg"]);
+  }
+
+  createProjectsSection() {
+    this.addTitle("PROJECTS!");
+
+    let id,
+      itemIndex = 0;
+
+    // add items
+    this.timeline.assetList[this.section].forEach((filename) => {
+      id = `${this.section}/${filename}`;
+
+      this.timeline.items[id] = new ImageItem({
+        timeline: this.timeline,
+        texture: this.timeline.assets.textures[this.section][filename],
+        data: this.timeline.assetData[this.section][filename],
+        page: this.section,
+        itemIndex: itemIndex,
+        itemIndexTotal: itemIndex,
+      });
+
+      this.add(this.timeline.items[id]);
+
+      itemIndex++;
+    });
   }
 
   createExperienceSection() {
@@ -324,20 +353,11 @@ export default class Section extends THREE.Group {
   createEducationSection() {
     this.addTitle("EDUCATION");
 
-    // this.addText({
-    //   text: "Rensselaer Polytechnic Institute",
-    //   font: "Schnyder L",
-    //   size: 40,
-    //   x: 0,
-    //   y: 100,
-    //   z: -700,
-    // });
-
     this.timeline.items["education/rpi"] = new TextItem({
       timeline: this.timeline,
       text: "Rensselaer Polytechnic Institute",
       font: "Schnyder L",
-      underline: true,
+      isFancy: true,
       size: 40,
       data: {
         caption: `
@@ -355,49 +375,46 @@ Relevant Coursework:
       },
       page: this.section,
       x: 0,
-      y: 100,
+      y: 50,
       z: -800,
     });
     this.add(this.timeline.items["education/rpi"]);
 
-    this.timeline.items["education/uhs"] = new TextItem({
-      timeline: this.timeline,
-      text: "San Francisco University High School",
+    this.addText({
+      text: "Rensselaer Leadership Award",
       font: "Schnyder L",
-      size: 40,
-      underline: true,
-      data: {
-        caption: `
-eee
-`,
-        link: "",
-      },
-      page: this.section,
+      size: 20,
+      x: 0,
+      y: -50,
+      z: -800,
+    });
+    this.addText({
+      text: "Dean's Honor List, All Semesters",
+      font: "Schnyder L",
+      size: 20,
       x: 0,
       y: -100,
       z: -800,
     });
-    this.add(this.timeline.items["education/uhs"]);
-
-    // this.addText({
-    //   text: "San Francisco University High School",
-    //   font: "Schnyder L",
-    //   size: 40,
-    //   x: 0,
-    //   y: -100,
-    //   z: -700,
-    // });
+    this.addText({
+      text: "Eagle Scout",
+      font: "Schnyder L",
+      size: 20,
+      x: 0,
+      y: -150,
+      z: -800,
+    });
   }
 
   createSkillsSection() {
     this.addTitle("SKILLS");
     this.addText({
-      text: "My greatest skill is my ability to learn concepts quickly.",
+      text: "My most valuable skill is my ability to learn concepts quickly.",
       font: "Schnyder L",
       size: 20,
       x: 0,
       y: 150,
-      z: -500,
+      z: -600,
     });
     this.addText({
       text: "Click an icon to see more.",
@@ -405,7 +422,7 @@ eee
       size: 14,
       x: 0,
       y: -150,
-      z: -400,
+      z: -650,
     });
 
     this.timeline.items["skills/languages"] = new TextItem({
@@ -427,7 +444,7 @@ Languages:
         link: "",
       },
       page: this.section,
-      x: -100,
+      x: -50,
       y: 0,
       z: -700,
       openY: 100,
@@ -453,7 +470,7 @@ Frameworks:
         link: "",
       },
       page: this.section,
-      x: 0,
+      x: 50,
       y: 0,
       z: -800,
       openY: 100,
@@ -477,7 +494,7 @@ Essential Skills:
         link: "",
       },
       page: this.section,
-      x: -100,
+      x: -50,
       y: -100,
       z: -1000,
       openY: 100,
@@ -502,7 +519,7 @@ Tools:
         link: "",
       },
       page: this.section,
-      x: 0,
+      x: 50,
       y: -100,
       z: -900,
       openY: 100,
