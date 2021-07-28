@@ -1,11 +1,9 @@
 import * as THREE from "three";
-// import SVGLoader from "three-svg-loader";
-// import { SVGLoader } from "../utils/SVGLoader";
 import { MeshLine, MeshLineMaterial } from "three.meshline";
 import greenscreen from "../shaders/greenscreen.frag";
 import vert from "../shaders/default.vert";
 import { TweenMax } from "gsap";
-import Item from "./Item";
+import { ImageItem, TextItem } from "./Item";
 
 export default class Section extends THREE.Group {
   constructor(opts = { timeline, section }) {
@@ -52,7 +50,7 @@ export default class Section extends THREE.Group {
     }
   }
 
-  addTitle(title, y=null) {
+  addTitle(title, y = null) {
     let textGeom = new THREE.TextBufferGeometry(title, {
       font: this.timeline.assets.fonts["Schnyder L"],
       size: 200,
@@ -61,7 +59,11 @@ export default class Section extends THREE.Group {
     }).center();
 
     let pageName = new THREE.Mesh(textGeom, this.timeline.textMat);
-    pageName.position.set(this.timeline.pages[this.section].offset || 0, y ?? 0, 0);
+    pageName.position.set(
+      this.timeline.pages[this.section].offset || 0,
+      y ?? 0,
+      0
+    );
     this.add(pageName);
   }
 
@@ -123,15 +125,12 @@ export default class Section extends THREE.Group {
   addIntroBadge() {
     this.badge = new THREE.Group();
 
-    let serifTextGeom = new THREE.TextGeometry(
-      "Scroll or hold to advance.",
-      {
-        font: this.timeline.assets.fonts["Schnyder L"],
-        size: 26,
-        height: 0,
-        curveSegments: 6,
-      }
-    );
+    let serifTextGeom = new THREE.TextGeometry("Scroll or hold to advance.", {
+      font: this.timeline.assets.fonts["Schnyder L"],
+      size: 26,
+      height: 0,
+      curveSegments: 6,
+    });
     serifTextGeom.center();
 
     let serifText = new THREE.Mesh(serifTextGeom, this.timeline.textMat);
@@ -325,97 +324,190 @@ export default class Section extends THREE.Group {
   createEducationSection() {
     this.addTitle("EDUCATION");
 
-    this.addText({
-      text: "Rensselaer Polytechnic Institute",
-      font: "Schnyder L",
-      size: 40,
-      x: 0,
-      y: 100,
-      z: -700,
-    });
-
-    this.addText({
-      text: "San Francisco University High School",
-      font: "Schnyder L",
-      size: 40,
-      x: 0,
-      y: -100,
-      z: -700,
-    });
-  }
-
-  createSkillsSection() {
-    this.addTitle("SKILLS");
     // this.addText({
-    //   text: "My greatest skill is my ability to learn concepts quickly.",
+    //   text: "Rensselaer Polytechnic Institute",
     //   font: "Schnyder L",
     //   size: 40,
     //   x: 0,
     //   y: 100,
     //   z: -700,
     // });
+
+    this.timeline.items["education/rpi"] = new TextItem({
+      timeline: this.timeline,
+      text: "Rensselaer Polytechnic Institute",
+      font: "Schnyder L",
+      underline: true,
+      size: 40,
+      data: {
+        caption: `
+Bachelors of Science in Computer Science
+GPA: 3.87/4.00
+Expected: Spring 2022
+Relevant Coursework:
+- Intro to Algorithms
+- Data Analytics
+- Learning and Advanced Game AI
+- Cognitive Computing
+- Undergraduate Research
+`,
+        link: "",
+      },
+      page: this.section,
+      x: 0,
+      y: 100,
+      z: -800,
+    });
+    this.add(this.timeline.items["education/rpi"]);
+
+    this.timeline.items["education/uhs"] = new TextItem({
+      timeline: this.timeline,
+      text: "San Francisco University High School",
+      font: "Schnyder L",
+      size: 40,
+      underline: true,
+      data: {
+        caption: `
+eee
+`,
+        link: "",
+      },
+      page: this.section,
+      x: 0,
+      y: -100,
+      z: -800,
+    });
+    this.add(this.timeline.items["education/uhs"]);
+
     // this.addText({
-    //   text: "(and I'm great at Googling for help)",
+    //   text: "San Francisco University High School",
     //   font: "Schnyder L",
     //   size: 40,
     //   x: 0,
     //   y: -100,
     //   z: -700,
     // });
+  }
 
+  createSkillsSection() {
+    this.addTitle("SKILLS");
     this.addText({
+      text: "My greatest skill is my ability to learn concepts quickly.",
+      font: "Schnyder L",
+      size: 20,
+      x: 0,
+      y: 150,
+      z: -500,
+    });
+    this.addText({
+      text: "Click an icon to see more.",
+      font: "Schnyder L",
+      size: 14,
+      x: 0,
+      y: -150,
+      z: -400,
+    });
+
+    this.timeline.items["skills/languages"] = new TextItem({
+      timeline: this.timeline,
       text: "A",
       font: "icons",
       size: 60,
+      data: {
+        caption: `
+Languages:
+- Python
+- C++
+- C
+- Java
+- JavaScript, TypeScript
+- Dart
+- HTML/CSS/SASS
+`,
+        link: "",
+      },
+      page: this.section,
       x: -100,
       y: 0,
       z: -700,
+      openY: 100,
     });
+    this.add(this.timeline.items["skills/languages"]);
 
-    // this.addLinkBox({ size: 100, x: -100, y: 0, z: -700, onClick: () => {} });
-    // this.linkBox = new THREE.Mesh(
-    //       new THREE.PlaneBufferGeometry(612, 792),
-    //       new THREE.MeshBasicMaterial({ alphaTest: 0, visible: true })
-    //     );
-    //     this.linkBox.position.set(0, 0, 1);
-    //     this.linkBox.onClick = () => {
-    //       window.open("assets/resume/resume.pdf", "_blank");
-    //     };
-    //     this.add(this.linkBox);
-
-    this.addText({
+    this.timeline.items["skills/frameworks"] = new TextItem({
+      timeline: this.timeline,
       text: "B",
       font: "icons",
       size: 60,
+      data: {
+        caption: `
+Frameworks:
+- Flutter
+- PyTorch
+- Tensorflow
+- Pandas
+- Scikit-Learn
+- Matplotlib
+- THREE.JS
+`,
+        link: "",
+      },
+      page: this.section,
       x: 0,
       y: 0,
       z: -800,
+      openY: 100,
     });
-    this.addText({
+    this.add(this.timeline.items["skills/frameworks"]);
+
+    this.timeline.items["skills/soft"] = new TextItem({
+      timeline: this.timeline,
       text: "C",
       font: "icons",
       size: 60,
+      data: {
+        caption: `
+Essential Skills:
+- Problem-Solver
+- Adaptable
+- Creative
+- Leader
+- Self-Motivated
+`,
+        link: "",
+      },
+      page: this.section,
       x: -100,
       y: -100,
       z: -1000,
+      openY: 100,
     });
-    this.addText({
+    this.add(this.timeline.items["skills/soft"]);
+
+    this.timeline.items["skills/tools"] = new TextItem({
+      timeline: this.timeline,
       text: "D",
       font: "icons",
       size: 60,
+      data: {
+        caption: `
+Tools:
+- Git
+- Google Cloud
+- Docker
+- Firebase
+- Webpack
+- Adobe Illustrator
+`,
+        link: "",
+      },
+      page: this.section,
       x: 0,
       y: -100,
       z: -900,
+      openY: 100,
     });
-    // let material = new THREE.MeshBasicMaterial({
-    //   map: texture,
-    //   transparent: true,
-    // });
-    // let geom = new THREE.PlaneGeometry(1, 1);
-    // let icon = new THREE.Mesh(geom, material);
-    // icon.scale.set(200, 200, 1);
-    // icon.position.set(0, 0, -500);
-    // this.add(icon);
+    this.add(this.timeline.items["skills/tools"]);
   }
 
   createContactSection() {

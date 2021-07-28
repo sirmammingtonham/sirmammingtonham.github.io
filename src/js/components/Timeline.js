@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { TweenMax } from "gsap";
 import TinyGesture from "tinygesture";
 import AssetLoader from "../utils/AssetLoader";
-import Item from "./Item";
+import { ImageItem } from "./Item";
 import Section from "./Section";
 import Konami from "konami";
 
@@ -172,6 +172,14 @@ export default class Timeline {
       color: 0x1b42d8,
       transparent: true,
     });
+    this.textItemMat = new THREE.MeshBasicMaterial({
+      color: 0x1b42d8,
+      transparent: true,
+    });
+    this.textItemUnderlineMat = new THREE.MeshBasicMaterial({
+      color: 0x1b42d8,
+      transparent: true,
+    });
     this.captionTextMat = new THREE.MeshBasicMaterial({
       color: 0x1b42d8,
       transparent: true,
@@ -212,7 +220,7 @@ export default class Timeline {
         this.assetList[page].forEach((filename) => {
           id = `${page}/${filename}`;
 
-          this.items[id] = new Item({
+          this.items[id] = new ImageItem({
             timeline: this,
             texture: this.assets.textures[page][filename],
             data: this.assetData[page][filename],
@@ -345,6 +353,12 @@ export default class Timeline {
     }
 
     let posOffset = this.sections[this.activePage].position.z;
+    console.log({
+      z:
+        -(posOffset - -item.position.z) +
+        (this.c.globalScale < 0.5 ? 450 : 300),
+      pos: item.position,
+    });
 
     if (item.page !== this.activePage) {
       posOffset =
@@ -369,8 +383,7 @@ export default class Timeline {
 
     TweenMax.to(this.timeline.position, 1.5, {
       z:
-        -(posOffset - -item.position.z) +
-        (this.c.globalScale < 0.5 ? 450 : 300),
+        -(posOffset + item.position.z) + (this.c.globalScale < 0.5 ? 450 : 300),
       ease: "Expo.easeInOut",
     });
 
@@ -398,6 +411,11 @@ export default class Timeline {
       onStart: () => {
         this.linkUnderlineMat.visible = true;
       },
+    });
+
+    TweenMax.to(this.textItemUnderlineMat, 2, {
+      opacity: 0,
+      ease: "Expo.easeInOut",
     });
 
     if (item.caption) {
@@ -448,13 +466,18 @@ export default class Timeline {
 
     for (let x in this.items) {
       // TODO: see if can select just in camera range + a bit more for the timeline position
-
+      if (this.items[x] === item) continue;
+      if (this.items[x].isText) {
+        TweenMax.to(this.items[x].position, 1.3, {
+          y: this.items[x].origPos.y > 0 ? 10000 : -10000,
+          ease: "Expo.easeInOut",
+        });
+        continue;
+      }
       if (this.items[x].align === 0) pos.set(-700, 700); // bottom left
       if (this.items[x].align === 1) pos.set(700, 700); // bottom right
       if (this.items[x].align === 2) pos.set(700, -700); // top right
       if (this.items[x].align === 3) pos.set(-700, -700); // top left
-
-      if (this.items[x] === item) continue;
 
       TweenMax.to(this.items[x].material.uniforms.opacity, 1.3, {
         value: 0,
@@ -512,6 +535,11 @@ export default class Timeline {
         },
       });
 
+      TweenMax.to(this.textItemUnderlineMat, 1.5, {
+        opacity: 1,
+        ease: "Expo.easeInOut",
+      });
+
       TweenMax.to([this.captionTextMat, this.linkUnderlineMat], 0.4, {
         opacity: 0,
         ease: "Expo.easeInOut",
@@ -525,6 +553,14 @@ export default class Timeline {
 
       for (let x in this.items) {
         if (this.items[x].active) continue;
+
+        if (this.items[x].isText) {
+          TweenMax.to(this.items[x].position, 1.3, {
+            y: this.items[x].origPos.y,
+            ease: "Expo.easeInOut",
+          });
+          continue;
+        }
 
         TweenMax.to(this.items[x].material.uniforms.opacity, 1.5, {
           value: 1,
@@ -703,17 +739,17 @@ export default class Timeline {
           this.dom.cursor.dataset.cursor = "pointer";
         }
       }
-      if (this.activePage === "skills") {
-        this.linkIntersect = this.raycaster.intersectObject(
-          this.sections["skills"].linkBox
-        );
+      //   if (this.activePage === "skills") {
+      //     this.linkIntersect = this.raycaster.intersectObject(
+      //       this.sections["skills"].linkBox
+      //     );
 
-        if (this.linkIntersect.length > 0) {
-          this.dom.cursor.dataset.cursor = "eye";
-        } else if (this.dom.cursor.dataset.cursor !== "cross") {
-          this.dom.cursor.dataset.cursor = "cross";
-        }
-      }
+      //     if (this.linkIntersect.length > 0) {
+      //       this.dom.cursor.dataset.cursor = "eye";
+      //     } else if (this.dom.cursor.dataset.cursor !== "cross") {
+      //       this.dom.cursor.dataset.cursor = "cross";
+      //     }
+      //   }
     }
 
     // raycast for item link
@@ -828,11 +864,19 @@ export default class Timeline {
         ease: "Power4.easeOut",
       });
 
-      TweenMax.set([this.captionTextMat.color, this.linkUnderlineMat.color], {
-        r: textColor.r,
-        g: textColor.g,
-        b: textColor.b,
-      });
+      TweenMax.set(
+        [
+          this.textItemMat.color,
+          this.captionTextMat.color,
+          this.linkUnderlineMat.color,
+          this.textItemUnderlineMat.color,
+        ],
+        {
+          r: textColor.r,
+          g: textColor.g,
+          b: textColor.b,
+        }
+      );
 
       for (let id in this.items) {
         TweenMax.to(this.items[id].uniforms.gradientColor.value, 1, {
