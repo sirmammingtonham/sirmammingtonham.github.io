@@ -4,7 +4,7 @@ import vert from '../shaders/default.vert'
 
 export default class Item extends THREE.Group {
 
-    constructor( opts = { timeline, texture, data, month, itemIndex, itemIndexTotal } ) {
+    constructor( opts = { timeline, texture, data, page, itemIndex, itemIndexTotal } ) {
     
         super()
         Object.assign( this, opts )
@@ -76,7 +76,7 @@ export default class Item extends THREE.Group {
         if( this.data.caption !== '' ) {
 
             let captionGeom = new THREE.TextGeometry( this.data.caption, {
-                font: this.timeline.assets.fonts['Schnyder L'],
+                font: this.timeline.assets.fonts['SuisseIntl-Bold'],
                 size: 18,
                 height: 0,
                 curveSegments: 4

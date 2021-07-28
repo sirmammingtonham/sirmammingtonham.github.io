@@ -63,10 +63,10 @@ export default class Timeline {
     this.assetData = assetData;
 
     this.timelineEntered = false;
-    this.activeMonth = "intro";
-    this.months = pages;
-    this.monthPositions = {};
-    this.remainingMonths = [];
+    this.activePage = "intro";
+    this.pages = pages;
+    this.pagePositions = {};
+    this.remainingPages = [];
     this.enableLoader = true;
     this.gyroEnabled = false;
     this.orientation = {
@@ -127,7 +127,7 @@ export default class Timeline {
 
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0xaec7c3);
-    this.scene.fog = new THREE.Fog(0xaec7c3, 1400, 2000);
+    this.scene.fog = new THREE.Fog(0xaec7c3, 900, 1600);
     this.scene.scale.set(this.c.globalScale, this.c.globalScale, 1);
 
     let cameraPosition = 800;
@@ -138,7 +138,7 @@ export default class Timeline {
       fov,
       this.c.size.w / this.c.size.h,
       1,
-      2000
+      1600
     );
     this.camera.position.set(0, this.enableLoader ? 2000 : 0, cameraPosition);
 
@@ -196,50 +196,57 @@ export default class Timeline {
     this.videoItems = [];
 
     let itemIndexTotal = 0,
-      nextMonthPos = 0;
+      nextPagePos = 0;
 
-    for (let month in this.months) {
-      this.sections[month] = new Section({
+    for (let page in this.pages) {
+      this.sections[page] = new Section({
         timeline: timeline,
-        section: month,
+        section: page,
       });
 
-      if (month !== "intro" && month !== "end") {
+      if (page !== "intro" && page !== "end") {
         let itemIndex = 0,
           id;
 
         // add items
-        this.assetList[month].forEach((filename) => {
-          id = `${month}/${filename}`;
+        this.assetList[page].forEach((filename) => {
+          id = `${page}/${filename}`;
 
           this.items[id] = new Item({
             timeline: this,
-            texture: this.assets.textures[month][filename],
-            data: this.assetData[month][filename],
-            month: month,
+            texture: this.assets.textures[page][filename],
+            data: this.assetData[page][filename],
+            page: page,
             itemIndex: itemIndex,
             itemIndexTotal: itemIndexTotal,
           });
 
-          this.sections[month].add(this.items[id]);
+          this.sections[page].add(this.items[id]);
 
           itemIndex++;
           itemIndexTotal++;
         });
       }
 
-      let bbox = new THREE.Box3().setFromObject(this.sections[month]);
+      let bbox = new THREE.Box3().setFromObject(this.sections[page]);
 
-      this.sections[month].position.z = nextMonthPos;
-      this.monthPositions[month] = nextMonthPos + 1100;
-      let posOffset = 800; // TODO: get from camera?
-      if (month === "intro") posOffset = 1700;
-      if (month === "dec") posOffset = 1800;
-      nextMonthPos += bbox.min.z - posOffset;
+      this.sections[page].position.z = nextPagePos;
+      this.pagePositions[page] = nextPagePos + 900; // how early we switch colors
+      let posOffset = 1600; // TODO: get from camera?
+      //   if (page === "intro") posOffset = 1900;
+      if (page === "contact") posOffset = 1800;
 
-      this.timeline.add(this.sections[month]);
+      nextPagePos += bbox.min.z - posOffset;
+      //   console.log({
+      //     page,
+      //     z: this.sections[page].position.z,
+      //     position: nextPagePos + 900,
+      //     nextPagePos,
+      //     bboxz: bbox.min.z,
+      //   });
+      this.timeline.add(this.sections[page]);
 
-      if (month === "end") this.stopScrollPos = this.sections[month].position.z;
+      if (page === "end") this.stopScrollPos = this.sections[page].position.z;
     }
 
     this.videoCount = this.videoItems.length;
@@ -337,11 +344,11 @@ export default class Timeline {
       }
     }
 
-    let posOffset = this.sections[this.activeMonth].position.z;
+    let posOffset = this.sections[this.activePage].position.z;
 
-    if (item.month !== this.activeMonth) {
+    if (item.page !== this.activePage) {
       posOffset =
-        this.sections[this.remainingMonths[this.remainingMonths.length - 2]]
+        this.sections[this.remainingPages[this.remainingPages.length - 2]]
           .position.z;
     }
 
@@ -533,10 +540,10 @@ export default class Timeline {
     }
   }
 
-  openContact(e) {
+  openResume(e) {
     e.preventDefault();
 
-    if (this.resumeSection.isOpen) return this.closeContact();
+    if (this.resumeSection.isOpen) return this.closeResume();
 
     this.dom.cursor.dataset.cursor = "cross";
 
@@ -555,7 +562,7 @@ export default class Timeline {
     });
   }
 
-  closeContact() {
+  closeResume() {
     this.timeline.visible = true;
     this.resumeSection.isOpen = false;
 
@@ -600,7 +607,7 @@ export default class Timeline {
         if (this.linkIntersect[0].object.onClick)
           this.linkIntersect[0].object.onClick();
       } else {
-        this.closeContact();
+        this.closeResume();
       }
     } else if (this.itemOpen) {
       if (this.linkIntersect.length > 0) {
@@ -672,7 +679,7 @@ export default class Timeline {
       !this.itemOpen &&
       !this.c.holdingMouseDown
     ) {
-      if (this.activeMonth === "end") {
+      if (this.activePage === "end") {
         this.intersects = [];
         this.whooshIntersects = this.raycaster.intersectObjects(
           this.sections["end"].whoosh.children
@@ -694,6 +701,17 @@ export default class Timeline {
           this.dom.cursor.dataset.cursor = "eye";
         } else if (this.dom.cursor.dataset.cursor !== "pointer") {
           this.dom.cursor.dataset.cursor = "pointer";
+        }
+      }
+      if (this.activePage === "skills") {
+        this.linkIntersect = this.raycaster.intersectObject(
+          this.sections["skills"].linkBox
+        );
+
+        if (this.linkIntersect.length > 0) {
+          this.dom.cursor.dataset.cursor = "eye";
+        } else if (this.dom.cursor.dataset.cursor !== "cross") {
+          this.dom.cursor.dataset.cursor = "cross";
         }
       }
     }
@@ -733,7 +751,7 @@ export default class Timeline {
       ease: "Power4.easeOut",
     });
 
-    if (this.activeMonth === "end") {
+    if (this.activePage === "end") {
       TweenMax.to(this.sections["end"].arrow.rotation, 4, {
         x: -1.5 + this.mousePerspective.y * 0.2,
         y: this.mousePerspective.x * 0.8,
@@ -776,26 +794,24 @@ export default class Timeline {
   }
 
   changeColours(override = false) {
-    this.remainingMonths = Object.keys(this.monthPositions).filter((key) => {
-      return this.timeline.position.z > -this.monthPositions[key]; // TODO: look into detecting if exists in camera
+    this.remainingPages = Object.keys(this.pagePositions).filter((key) => {
+      return this.timeline.position.z > -this.pagePositions[key]; // TODO: look into detecting if exists in camera
     });
 
     if (
       override ||
-      (this.remainingMonths[this.remainingMonths.length - 1] &&
-        this.activeMonth !==
-          this.remainingMonths[this.remainingMonths.length - 1])
+      (this.remainingPages[this.remainingPages.length - 1] &&
+        this.activePage !== this.remainingPages[this.remainingPages.length - 1])
     ) {
       if (override) {
-        this.activeMonth = override;
+        this.activePage = override;
       } else {
-        this.activeMonth =
-          this.remainingMonths[this.remainingMonths.length - 1];
+        this.activePage = this.remainingPages[this.remainingPages.length - 1];
       }
 
-      let bgColor = new THREE.Color(this.months[this.activeMonth].bgColor);
-      let textColor = new THREE.Color(this.months[this.activeMonth].textColor);
-      let tintColor = new THREE.Color(this.months[this.activeMonth].tintColor);
+      let bgColor = new THREE.Color(this.pages[this.activePage].bgColor);
+      let textColor = new THREE.Color(this.pages[this.activePage].textColor);
+      let tintColor = new THREE.Color(this.pages[this.activePage].tintColor);
       let interfaceColor;
 
       TweenMax.to([this.scene.fog.color, this.scene.background], 1, {
@@ -827,9 +843,9 @@ export default class Timeline {
         });
       }
 
-      if (this.months[this.activeMonth].outlineTextColor) {
+      if (this.pages[this.activePage].outlineTextColor) {
         let outlineTextColor = new THREE.Color(
-          this.months[this.activeMonth].outlineTextColor
+          this.pages[this.activePage].outlineTextColor
         );
         interfaceColor = outlineTextColor.getHexString();
 
@@ -843,10 +859,8 @@ export default class Timeline {
         interfaceColor = textColor.getHexString();
       }
 
-      if (this.months[this.activeMonth].contactColor)
-        this.contactTextMat.color.set(
-          this.months[this.activeMonth].contactColor
-        );
+      if (this.pages[this.activePage].contactColor)
+        this.contactTextMat.color.set(this.pages[this.activePage].contactColor);
       else this.contactTextMat.color.set(0xffffff);
 
       TweenMax.to(this.dom.mainSvgs, 1, {
@@ -866,7 +880,7 @@ export default class Timeline {
         .querySelector("meta[name=theme-color]")
         .setAttribute("content", "#" + bgColor.getHexString());
 
-      if (this.activeMonth === "end" && !this.sections["end"].arrowTween) {
+      if (this.activePage === "end" && !this.sections["end"].arrowTween) {
         this.sections["end"].arrowTween = TweenMax.to(
           this.sections["end"].arrow.position,
           1,
@@ -981,7 +995,7 @@ export default class Timeline {
     this.scroll = this.scroll.bind(this);
     this.mouseDown = this.mouseDown.bind(this);
     this.mouseUp = this.mouseUp.bind(this);
-    this.openContact = this.openContact.bind(this);
+    this.openResume = this.openResume.bind(this);
     this.moveToStart = this.moveToStart.bind(this);
 
     window.addEventListener("resize", this.resize, false);
@@ -1002,7 +1016,7 @@ export default class Timeline {
 
     document
       .querySelector(".resume")
-      .addEventListener("click", this.openContact, false);
+      .addEventListener("click", this.openResume, false);
     if (this.enableLoader)
       document
         .querySelector(".enter")
