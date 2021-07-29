@@ -4,7 +4,18 @@ import vert from "../shaders/default.vert";
 
 export class ImageItem extends THREE.Group {
   constructor(
-    opts = { timeline, texture, data, page, itemIndex, itemIndexTotal, x, y, z }
+    opts = {
+      assetId,
+      timeline,
+      texture,
+      data,
+      page,
+      itemIndex,
+      itemIndexTotal,
+      x,
+      y,
+      z,
+    }
   ) {
     super();
     Object.assign(this, opts);
@@ -88,7 +99,9 @@ export class ImageItem extends THREE.Group {
       }).center();
 
       this.caption = new THREE.Mesh(captionGeom, this.timeline.captionTextMat);
-      this.caption.position.set(0, -this.mesh.scale.y / 2 - 50, 0);
+      let yOffset = 25;
+      if (this.assetId === "about/me.jpg") yOffset = 170;
+      this.caption.position.set(0, -(this.mesh.scale.y / 2 + yOffset), 0);
       this.caption.visible = false;
 
       this.add(this.caption);
@@ -171,7 +184,9 @@ export class TextItem extends THREE.Group {
 
     if (this.data.caption !== "") {
       let captionGeom = new THREE.TextBufferGeometry(this.data.caption, {
-        font: this.timeline.assets.fonts["SuisseIntl-Bold"],
+        font: this.timeline.assets.fonts[
+          this.isFancy ? "Schnyder L" : "SuisseIntl-Bold"
+        ],
         size: 18,
         height: 0,
         curveSegments: 4,

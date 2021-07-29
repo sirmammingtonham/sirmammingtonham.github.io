@@ -1,8 +1,4 @@
 import * as THREE from "three";
-import { MeshLine, MeshLineMaterial } from "three.meshline";
-import greenscreen from "../shaders/greenscreen.frag";
-import vert from "../shaders/default.vert";
-import { TweenMax } from "gsap";
 import { ImageItem, TextItem } from "./Item";
 
 export default class Section extends THREE.Group {
@@ -29,6 +25,10 @@ export default class Section extends THREE.Group {
       }
       case "experience": {
         this.createExperienceSection();
+        break;
+      }
+      case "publications": {
+        this.createPublicationsSection();
         break;
       }
       case "education": {
@@ -170,32 +170,9 @@ export default class Section extends THREE.Group {
       y: -180,
       z: -700,
     });
-    // this.addText({
-    //   text: "In my free time, you can catch me:",
-    //   font: "SuisseIntl-Bold",
-    //   size: 26,
-    //   x: 0,
-    //   y: 200,
-    //   z: -1100,
-    // });
-    // this.addText({
-    //   text: `
-    // • Playing video games
-    // • Playing tennis or spikeball
-    // • Rock climbing
-    // • Learning guitar
-    // • Reading One Piece or something
-    // • Hiking or camping
-    // • Cooking
-    // `,
-    //   font: "Suisse Intl",
-    //   size: 20,
-    //   x: 0,
-    //   y: 0,
-    //   z: -1200,
-    // });
 
     this.timeline.items["about/me.jpg"] = new ImageItem({
+      assetId: "about/me.jpg",
       timeline: this.timeline,
       texture: this.timeline.assets.textures[this.section]["me.jpg"],
       data: this.timeline.assetData[this.section]["me.jpg"],
@@ -219,6 +196,7 @@ export default class Section extends THREE.Group {
       id = `${this.section}/${filename}`;
 
       this.timeline.items[id] = new ImageItem({
+        assetId: id,
         timeline: this.timeline,
         texture: this.timeline.assets.textures[this.section][filename],
         data: this.timeline.assetData[this.section][filename],
@@ -350,6 +328,18 @@ export default class Section extends THREE.Group {
     });
   }
 
+  createPublicationsSection() {
+    this.addTitle("PUBLICATIONS");
+    this.addText({
+      text: "work in progress",
+      font: "Schnyder L",
+      size: 20,
+      x: 0,
+      y: 0,
+      z: -400,
+    });
+  }
+
   createEducationSection() {
     this.addTitle("EDUCATION");
 
@@ -409,7 +399,7 @@ Relevant Coursework:
   createSkillsSection() {
     this.addTitle("SKILLS");
     this.addText({
-      text: "My most valuable skill is my ability to learn concepts quickly.",
+      text: "My most valuable skill is my ability to learn things quickly.",
       font: "Schnyder L",
       size: 20,
       x: 0,

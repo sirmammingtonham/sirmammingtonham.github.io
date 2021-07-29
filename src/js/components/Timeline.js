@@ -334,17 +334,19 @@ export default class Timeline {
         this.sections[this.remainingPages[this.remainingPages.length - 2]]
           .position.z;
     }
+    let y = 100;
+    if (item.isText) y = 100;
+    if (item.assetId === "about/me.jpg") y = 200;
 
     TweenMax.to(item.position, 1.5, {
       x: 0,
-      y: item.isText ? 100 : 0,
+      y,
       ease: "Expo.easeInOut",
       onComplete: () => {
         this.itemAnimating = false;
         this.dom.cursor.dataset.cursor = "cross";
       },
     });
-    console.log(item.position)
 
     TweenMax.to(item.uniforms.progress, 1.5, {
       value: 1,
@@ -411,9 +413,13 @@ export default class Timeline {
         window.open(item.data.link, "_blank");
       };
 
-      this.linkGroup.position.y = item.caption
-        ? item.caption.position.y - 40
-        : -item.mesh.scale.y / 2 - 50;
+      this.linkGroup.position.y = item.caption.position.y + 45; 
+// item.caption
+//         ? item.caption.position.y - 20
+//         : -item.mesh.scale.y / 2 - 50;
+console.log(item.caption.position.y - 20);
+console.log(-item.mesh.scale.y / 2 - 50);
+    console.log(this.linkGroup.position.y);
 
       TweenMax.fromTo(
         this.linkGroup.position,
@@ -435,7 +441,6 @@ export default class Timeline {
     let pos = new THREE.Vector2();
 
     for (let x in this.items) {
-      // TODO: see if can select just in camera range + a bit more for the timeline position
       if (this.items[x] === item) continue;
       if (this.items[x].isText) {
         TweenMax.to(this.items[x].position, 1.3, {
