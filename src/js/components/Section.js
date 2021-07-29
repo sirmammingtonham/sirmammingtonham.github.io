@@ -455,7 +455,7 @@ Frameworks:
 - Pandas
 - Scikit-Learn
 - Matplotlib
-- THREE.JS
+- three.js
 `,
         link: "",
       },
