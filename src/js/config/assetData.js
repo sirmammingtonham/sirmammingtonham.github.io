@@ -32,36 +32,36 @@ In my free time, you can catch me:
     },
     "futureMAG.jpg": {
       caption: "futureMAG: AI Generated Magazine",
-      link: "assets/v1.0/projects/futuremag.html",
+      link: "v1.0/projects/futuremag.html",
     },
     "aiart.png": {
       caption: "AIART: AI Generated Art Project",
-      link: "assets/v1.0/projects/aiart.html",
+      link: "v1.0/projects/aiart.html",
     },
     "shid_hearthstone.png": {
       caption: "yeeb bot: Music, Hearthstone, and Meme Bot for Discord",
-      link: "assets/v1.0/projects/yeeb.html",
+      link: "v1.0/projects/yeeb.html",
     },
     "alpha.jpg": {
       caption: "AlphaStone: Self-Taught Hearthstone AI Agent",
-      link: "assets/v1.0/projects/alphastone.html",
+      link: "v1.0/projects/alphastone.html",
     },
     "dronee.jpg": {
       caption: "droneee: Attempt at Autonomous Drone Flight",
-      link: "assets/v1.0/projects/droneee.html",
+      link: "v1.0/projects/droneee.html",
     },
     "worldwide.png": {
       caption: "WorldWide: an Exploration in the Internet as a Ruin",
-      link: "assets/v1.0/projects/worldwide.html",
+      link: "v1.0/projects/worldwide.html",
     },
 
     "guitar.jpg": {
       caption: "3d Printed Guitar and Pocket-Sized Amp",
-      link: "assets/v1.0/projects/guitar.html",
+      link: "v1.0/projects/guitar.html",
     },
     "sign1.jpg": {
       caption: "Sea Level Rise Signs: Eagle Scout Project",
-      link: "assets/v1.0/projects/seasigns.html",
+      link: "v1.0/projects/seasigns.html",
     },
   },
   publications: {},
