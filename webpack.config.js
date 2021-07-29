@@ -12,7 +12,7 @@ const devMode = process.env.NODE_ENV !== 'production'
 module.exports = {
     entry: [ './src/js/main.js' ],
     output: {
-        path: path.resolve(__dirname, 'public'),
+        path: path.resolve(__dirname, 'docs'),
         filename: 'js/[name].[hash].js'
     },
     module: {
@@ -46,7 +46,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new CleanWebpackPlugin(['public/js', 'public/css']),
+        new CleanWebpackPlugin(['docs/js', 'docs/css']),
         new HtmlWebpackPlugin({
             template: 'src/index.html',
             inject: false
@@ -84,7 +84,7 @@ module.exports = {
     ],
     devServer: {
         hot: true, // Tell the dev-server we're using HMR
-        contentBase: path.resolve(__dirname, 'public'),
+        contentBase: path.resolve(__dirname, 'docs'),
     },
     devtool: devMode ? 'cheap-eval-source-map' : false,
     optimization: {
