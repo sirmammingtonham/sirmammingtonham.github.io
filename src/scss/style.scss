@@ -1,29 +1,29 @@
-@font-face {
-  font-family: "Schnyder L Web";
-  src: url("../../docs/fonts/SchnyderL-Bold-Web.woff2") format("woff2"),
-    url("../../docs/fonts/SchnyderL-Bold-Web.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-  font-stretch: normal;
-}
+// @font-face {
+//   font-family: "Schnyder L Web";
+//   src: url("../../docs/fonts/SchnyderL-Bold-Web.woff2") format("woff2"),
+//     url("../../docs/fonts/SchnyderL-Bold-Web.woff") format("woff");
+//   font-weight: 700;
+//   font-style: normal;
+//   font-stretch: normal;
+// }
 
-@font-face {
-  font-family: "SuisseIntl-Bold";
-  src: url("../../docs/fonts/SuisseIntl-Bold.woff2") format("woff2"),
-    url("../../docs/fonts/SuisseIntl-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-  font-stretch: normal;
-}
+// @font-face {
+//   font-family: "SuisseIntl-Bold";
+//   src: url("../../docs/fonts/SuisseIntl-Bold.woff2") format("woff2"),
+//     url("../../docs/fonts/SuisseIntl-Bold.woff") format("woff");
+//   font-weight: 700;
+//   font-style: normal;
+//   font-stretch: normal;
+// }
 
-@font-face {
-  font-family: "SuisseIntl-Regular";
-  src: url("../../docs/fonts/SuisseIntl-Regular.woff2") format("woff2"),
-    url("../../docs/fonts/SuisseIntl-Regular.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-  font-stretch: normal;
-}
+// @font-face {
+//   font-family: "SuisseIntl-Regular";
+//   src: url("../../docs/fonts/SuisseIntl-Regular.woff2") format("woff2"),
+//     url("../../docs/fonts/SuisseIntl-Regular.woff") format("woff");
+//   font-weight: 700;
+//   font-style: normal;
+//   font-stretch: normal;
+// }
 
 html,
 body {
@@ -261,7 +261,7 @@ main {
   height: 12px;
   pointer-events: all;
   transform: translateY(-90px);
-  font-family: "SuisseIntl-Bold";
+  // font-family: "SuisseIntl-Bold";
   // color: #1b42d8;
   font-size: 18px;
 
@@ -296,7 +296,7 @@ main {
 .left {
   left: 10px;
   left: -700px;
-  font-family: "SuisseIntl-Bold";
+  // font-family: "SuisseIntl-Bold";
   transform: translate(-40px, -50%);
 
   @media screen and (min-width: 750px) {
