@@ -41,7 +41,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.23.1",
-    "three": "^0.101.1",
+    "three": "^0.125.0",
     "three-addons": "^1.2.0",
     "three.meshline": "^1.2.0",
     "tinygesture": "^1.1.4",
