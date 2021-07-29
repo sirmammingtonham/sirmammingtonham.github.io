@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>3D Guitar - Ethan Joseph</title>
+		<link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="../images/favicon/favicon-16x16.png">
+		<link rel="manifest" href="../images/favicon/site.webmanifest">
+		<link rel="mask-icon" href="../images/favicon/safari-pinned-tab.svg" color="#5bbad5">
+		<link rel="shortcut icon" href="../images/favicon/favicon.ico">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="msapplication-config" content="../images/favicon/browserconfig.xml">
+		<meta name="theme-color" content="#ffffff">
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<img src="../images/electric-guitar.svg" class="icon">
+						<h1>3D Printed Guitar</h1>
+						<p>and Amp</p>
+						<p style="font-size:100%; padding-bottom:0.5em;">Still learning how to play it.</p>
+						<ul class="icons">
+
+						</ul>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Content -->
+							<section id="content" class="main">
+								<span class="image main"><img src="../images/guitar/hero.jpg" alt="" /></span>
+								<h2>3D Printed Guitar</h2>
+								<p>
+									After a spurt of unknown motivation, I decided that I wanted to learn to play guitar. However, I also wanted a unique guitar, so I found <a href="https://www.thingiverse.com/thing:1068688" target="_blank">this 3D model</a>, modified it a little bit, and proceeded to print and assemble it. I was tinkering with electronics at the time, and wanted to include lights since most of the model was hollow. I found a sound responsive LED controller online, and wanted to incorporate that as well. I printed the guitar in 6 parts on a replicator 2 and assembled it with epoxy. I ran into a lot of problems throughout the process, and even had to rebuild it at one point.
+								</p>
+								<p>
+									Throughout the printing process, I ran into many failures. There were two pieces that repeatedly failed: the neck piece and the top piece. In fact, one of the attempts failed so badly that the entire printer nozzle was covered in a large glob of melted plastic, preventing me from printing anything until I removed it with a barbecue lighter and a pair of pliers. I was able to successfully print both pieces after switching slicing software twice.
+								</p>
+								<p>
+									While I was painting the guitar for the first time, the hook I used to hang it on broke and the guitar dropped to the ground, breaking into 6 pieces and setting me back about 6 months of work...
+									While initially very frustrated, I was later happy that it broke at this stage. Although it required much more work to hide the seams, I was able to use the knowledge I gained from the first time sanding/painting it to give the guitar a much better looking finish when I went to paint it again.
+								</p>
+								<h3>Better LEDs</h3>
+								<p>
+									This year, I decided to upgrade the lighting on the guitar from the normal rgb leds with a cheap sound controller that I initially installed to addressable rgb leds controlled with an audio visualization script on a raspberry pi. I changed the lighting setup to utilize a Raspberry Pi Zero, a modified usb microphone, and the <a href="https://github.com/scottlawsonbc/audio-reactive-led-strip">audio-reactive-led-strip</a> library to make actually responsive leds with a cool animation.
+								</p>
+								<h2>Raspberry Pi Amp</h2>
+								<p>
+									Since I was headed to college and didn't want to bring a giant amp into a cramped dorm, I wanted to build a pocket sized guitar amp that I could use to practice while in school. There were options to purchase, but they were all expensive and didn't allow for effects to be added. As a result, I took another raspberry pi along with an <a href="http://www.audioinjector.net/rpi-zero">audio injector</a> soundcard and created a pocket sized amp, with effects controllable through my phone. Most of the work was already done for me with the <a href="https://guitarix.org/">guitarix</a> linux virtual amp software. However, I had a lot of issues with compatibility, and it took forever to install and setup all the components. 
+									<br>
+									(Those components include guitarix, a wireless access point so I didn't have to connect the pi to wifi, a python webserver, a read-only filesystem, rc.local, alsa, all the drivers for audio injector, and a bunch of other small things that messed everything up making this pretty simple project infinitely more complicated than it needed to be smh). On the bright side it works, its portable, and it sounds great!
+								</p>
+								<hr />
+								<!-- Image -->
+									<section>
+										<h2>Gallery:</h2>
+										<div class="box alt">
+											<div class="row gtr-uniform">
+												<div class="col-4"><span class="image fit"><img src="../images/guitar/Snapchat-2078637926.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="../images/guitar/Snapchat-212353476.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="../images/guitar/Snapchat-1332624494.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="../images/guitar/Snapchat-1499025416.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="../images/guitar/20161218_112733_HDR.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="../images/guitar/Snapchat-873626463.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="../images/guitar/Snapchat-456460398.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="../images/guitar/20170904_091412_HDR.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="../images/guitar/20170904_164118_HDR.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="../images/guitar/20171007_145448.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="../images/guitar/20171007_145611.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="../images/guitar/20171011_231206.jpg" alt="" /></span></div>
+											</div>
+										</div>
+									</section>
+
+							</section>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<p class="copyright">&copy; Wonderful Slippery Thing x Tender Surrender.</p>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>
