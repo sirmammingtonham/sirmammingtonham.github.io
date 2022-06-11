@@ -59,7 +59,7 @@ export default class Timeline {
       Object.entries(assetData).map(([key, val], _) => [key, Object.keys(val)])
     );
     this.assetList.resume = ["resume.png"];
-    this.assetList.end = ["wave.mp4"];
+    this.assetList.end = [];
     this.assetData = assetData;
 
     this.timelineEntered = false;
@@ -413,13 +413,13 @@ export default class Timeline {
         window.open(item.data.link, "_blank");
       };
 
-      this.linkGroup.position.y = item.caption.position.y + 45; 
-// item.caption
-//         ? item.caption.position.y - 20
-//         : -item.mesh.scale.y / 2 - 50;
-console.log(item.caption.position.y - 20);
-console.log(-item.mesh.scale.y / 2 - 50);
-    console.log(this.linkGroup.position.y);
+      this.linkGroup.position.y = item.caption.position.y + 45;
+      // item.caption
+      //         ? item.caption.position.y - 20
+      //         : -item.mesh.scale.y / 2 - 50;
+      console.log(item.caption.position.y - 20);
+      console.log(-item.mesh.scale.y / 2 - 50);
+      console.log(this.linkGroup.position.y);
 
       TweenMax.fromTo(
         this.linkGroup.position,

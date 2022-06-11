@@ -2,14 +2,14 @@ const assetData = {
   about: {
     "me.jpg": {
       caption: `
-In my free time, you can catch me:
-• Playing video games
-• Playing tennis or spikeball
-• Rock climbing
-• Learning guitar
-• Reading One Piece or something
-• Hiking or camping
-• Cooking`,
+      In my free time, you can catch me:
+      • Playing video games
+      • Playing tennis or spikeball
+      • Rock climbing
+      • Learning guitar
+      • Reading One Piece or something
+      • Hiking or camping
+      • Cooking`,
       link: "",
     },
   },

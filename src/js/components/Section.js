@@ -242,23 +242,23 @@ export default class Section extends THREE.Group {
       z: -2300,
     });
 
-    this.addText({
-      text: "Developer @ Skywind & Skyblivion Mod Project\nJun 2020 — Present",
-      font: "SuisseIntl-Bold",
-      size: 20,
-      x: 0,
-      y: 100,
-      z: -3100,
-    });
+    // this.addText({
+    //   text: "Developer @ Skywind & Skyblivion Mod Project\nJun 2020 — Present",
+    //   font: "SuisseIntl-Bold",
+    //   size: 20,
+    //   x: 0,
+    //   y: 100,
+    //   z: -3100,
+    // });
 
-    this.addText({
-      text: "Face Detection Research @ Deep North AI\nJun 2018 — Aug 2018",
-      font: "SuisseIntl-Bold",
-      size: 26,
-      x: 0,
-      y: 100,
-      z: -3900,
-    });
+    // this.addText({
+    //   text: "Face Detection Research @ Deep North AI\nJun 2018 — Aug 2018",
+    //   font: "SuisseIntl-Bold",
+    //   size: 26,
+    //   x: 0,
+    //   y: 100,
+    //   z: -3900,
+    // });
 
     // body sections
     this.addText({
@@ -302,42 +302,101 @@ export default class Section extends THREE.Group {
       y: -100,
       z: -2400,
     });
-    this.addText({
-      text: `
-    • Joined team of over 100 developers trying to port Bethesda’s video games
-      Morrowind and Oblivion into the Skyrim Engine.
-    • In charge of Spellmaking system, involves C++ reverse-engineering and
-      Flash/Actionscript UI development.`,
-      font: "Suisse Intl",
-      size: 20,
-      x: 0,
-      y: -50,
-      z: -3200,
-    });
-    this.addText({
-      text: `
-    • Worked with researcher to develop, train, and evaluate face detection
-      models using the WIDER Face Dataset of almost 400,000 unique faces.
-    • Helped develop detection model that scored in the top 3
-      globally for the WIDER Face Challenge 2018`,
-      font: "Suisse Intl",
-      size: 20,
-      x: 0,
-      y: -75,
-      z: -4000,
-    });
+    // this.addText({
+    //   text: `
+    // • Joined team of over 100 developers trying to port Bethesda’s video games
+    //   Morrowind and Oblivion into the Skyrim Engine.
+    // • In charge of Spellmaking system, involves C++ reverse-engineering and
+    //   Flash/Actionscript UI development.`,
+    //   font: "Suisse Intl",
+    //   size: 20,
+    //   x: 0,
+    //   y: -50,
+    //   z: -3200,
+    // });
+    // this.addText({
+    //   text: `
+    // • Worked with researcher to develop, train, and evaluate face detection
+    //   models using the WIDER Face Dataset of almost 400,000 unique faces.
+    // • Helped develop detection model that scored in the top 3
+    //   globally for the WIDER Face Challenge 2018`,
+    //   font: "Suisse Intl",
+    //   size: 20,
+    //   x: 0,
+    //   y: -75,
+    //   z: -4000,
+    // });
   }
 
   createPublicationsSection() {
     this.addTitle("PUBLICATIONS");
-    this.addText({
-      text: "work in progress",
+
+    this.timeline.items["publications/dtt"] = new TextItem({
+      timeline: this.timeline,
+      text: "Improving Data-to-Text Generation via\nPreserving High-Frequency Phrases and Fact-Checking",
       font: "Schnyder L",
+      isFancy: false,
       size: 20,
+      data: {
+        caption: `
+        Joseph, Ethan, Julian Lioanag, and Mei Si. (2021)
+        IJCoL. Italian Journal of Computational Linguistics 7, no. 7-1, 2 (2021): 223-244.
+        `,
+        link: "https://journals.openedition.org/ijcol/909",
+        font: "Suisse Intl",
+        size: 9,
+
+      },
+      page: this.section,
       x: 0,
       y: 0,
-      z: -400,
+      z: -800,
     });
+    this.add(this.timeline.items["publications/dtt"]);
+
+    this.timeline.items["publications/vbd"] = new TextItem({
+      timeline: this.timeline,
+      text: "Scraping Unstructured Data to Explore the Relationship\nbetween Rainfall Anomalies and Vector-Borne Disease Outbreaks",
+      font: "Schnyder L",
+      isFancy: false,
+      size: 20,
+      data: {
+        caption: `
+        Joseph, Ethan, Thilanka Munasinghe, Heidi Tubbs, Bhaskar Bishnoi, and Assaf Anyamba. (2021)
+        In 2021 IEEE International Conference on Big Data (Big Data), pp. 4156-4164. IEEE, 2021.
+        `,
+        link: "https://ieeexplore.ieee.org/abstract/document/9671853",
+        font: "Suisse Intl",
+        size: 12,
+      },
+      page: this.section,
+      x: 0,
+      y: 0,
+      z: -1600,
+    });
+    this.add(this.timeline.items["publications/vbd"]);
+
+    this.timeline.items["publications/cfcc"] = new TextItem({
+      timeline: this.timeline,
+      text: "A Corpus for Commonsense Inference in Story Cloze Test",
+      font: "Schnyder L",
+      isFancy: false,
+      size: 20,
+      data: {
+        caption: `
+        Yao, Bingsheng, Ethan Joseph, Julian Lioanag and Mei Si. (in press)
+        In Proceedings of The 13th Language Resources and Evaluation Conference.
+        `,
+        link: "",
+        font: "Suisse Intl",
+        size: 12,
+      },
+      page: this.section,
+      x: 0,
+      y: 0,
+      z: -2400,
+    });
+    this.add(this.timeline.items["publications/cfcc"]);
   }
 
   createEducationSection() {
@@ -351,16 +410,14 @@ export default class Section extends THREE.Group {
       size: 40,
       data: {
         caption: `
-Bachelors of Science in Computer Science
-GPA: 3.87/4.00
-Expected: Spring 2022
-Relevant Coursework:
-- Intro to Algorithms
-- Data Analytics
-- Learning and Advanced Game AI
-- Cognitive Computing
-- Undergraduate Research
-`,
+        GPA: 3.90/4.00
+        Relevant Coursework:
+        - Intro to Algorithms
+        - Data Analytics
+        - Learning and Advanced Game AI
+        - Cognitive Computing
+        - Undergraduate Research
+        `,
         link: "",
       },
       page: this.section,
@@ -371,7 +428,7 @@ Relevant Coursework:
     this.add(this.timeline.items["education/rpi"]);
 
     this.addText({
-      text: "Rensselaer Leadership Award",
+      text: "Bachelors of Science in Computer Science",
       font: "Schnyder L",
       size: 20,
       x: 0,
@@ -379,7 +436,7 @@ Relevant Coursework:
       z: -800,
     });
     this.addText({
-      text: "Dean's Honor List, All Semesters",
+      text: "Aug 2019 - Dec 2021",
       font: "Schnyder L",
       size: 20,
       x: 0,
@@ -387,12 +444,48 @@ Relevant Coursework:
       z: -800,
     });
     this.addText({
-      text: "Eagle Scout",
+      text: "summa cum laude",
       font: "Schnyder L",
       size: 20,
       x: 0,
       y: -150,
       z: -800,
+    });
+
+
+    this.timeline.items["education/cornell"] = new TextItem({
+      timeline: this.timeline,
+      text: "Cornell University (Cornell Tech)",
+      font: "Schnyder L",
+      isFancy: true,
+      size: 40,
+      // data: {
+      //   caption: `
+      //   `,
+      //   link: "",
+      // },
+      page: this.section,
+      x: 0,
+      y: 50,
+      z: -1600,
+    });
+    this.add(this.timeline.items["education/cornell"]);
+
+    this.addText({
+      text: "Masters of Engineering in Computer Science",
+      font: "Schnyder L",
+      size: 20,
+      x: 0,
+      y: -50,
+      z: -1600,
+    });
+    this.addText({
+      text: "Aug 2022 - Expected May 2023",
+      font: "Schnyder L",
+      size: 20,
+      x: 0,
+      y: -100,
+      z: -1600,
     });
   }
 
@@ -422,15 +515,15 @@ Relevant Coursework:
       size: 60,
       data: {
         caption: `
-Languages:
-- Python
-- C++
-- C
-- Java
-- JavaScript, TypeScript
-- Dart
-- HTML/CSS/SASS
-`,
+        Languages:
+        - Python
+        - C++
+        - C
+        - Java
+        - JavaScript, TypeScript
+        - Dart
+        - HTML/CSS/SASS
+        `,
         link: "",
       },
       page: this.section,
@@ -448,15 +541,15 @@ Languages:
       size: 60,
       data: {
         caption: `
-Frameworks:
-- Flutter
-- PyTorch
-- Tensorflow
-- Pandas
-- Scikit-Learn
-- Matplotlib
-- three.js
-`,
+        Frameworks:
+        - Flutter
+        - PyTorch
+        - Tensorflow
+        - Pandas
+        - Scikit-Learn
+        - Matplotlib
+        - three.js
+        `,
         link: "",
       },
       page: this.section,
@@ -474,13 +567,13 @@ Frameworks:
       size: 60,
       data: {
         caption: `
-Essential Skills:
-- Problem-Solver
-- Adaptable
-- Creative
-- Leader
-- Self-Motivated
-`,
+        Essential Skills:
+        - Problem-Solver
+        - Adaptable
+        - Creative
+        - Leader
+        - Self-Motivated
+        `,
         link: "",
       },
       page: this.section,
@@ -498,14 +591,14 @@ Essential Skills:
       size: 60,
       data: {
         caption: `
-Tools:
-- Git
-- Google Cloud
-- Docker
-- Firebase
-- Webpack
-- Adobe Illustrator
-`,
+        Tools:
+        - Git
+        - Google Cloud
+        - Docker
+        - Firebase
+        - Webpack
+        - Adobe Illustrator
+        `,
         link: "",
       },
       page: this.section,
@@ -603,6 +696,15 @@ Tools:
     resume.scale.set(612, 792, 1);
     resume.position.set(0, 0, 0);
     this.add(resume);
+
+    this.addText({
+      text: "Updated: June '22",
+      font: "SuisseIntl-Bold",
+      size: 20,
+      x: 500,
+      y: 0,
+      z: 0,
+    });
 
     // for raycasting so it doesn't just pick up on letters
     this.linkBox = new THREE.Mesh(

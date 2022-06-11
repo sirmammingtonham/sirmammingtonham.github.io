@@ -185,9 +185,9 @@ export class TextItem extends THREE.Group {
     if (this.data.caption !== "") {
       let captionGeom = new THREE.TextBufferGeometry(this.data.caption, {
         font: this.timeline.assets.fonts[
-          this.isFancy ? "Schnyder L" : "SuisseIntl-Bold"
+          this.data.font ?? (this.isFancy ? "Schnyder L" : "SuisseIntl-Bold")
         ],
-        size: 18,
+        size: this.data.size ?? 18,
         height: 0,
         curveSegments: 4,
       }).center();
