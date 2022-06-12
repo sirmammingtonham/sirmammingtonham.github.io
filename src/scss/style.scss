@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 @font-face {
   font-family: "Schnyder L Web";
   src: url("../../docs/fonts/SchnyderL-Bold-Web.woff2") format("woff2"),
@@ -255,62 +257,13 @@ main {
 
 .resume {
   position: absolute;
-  top: 18px;
-  right: 15px;
-  width: 86px;
-  height: 12px;
+  top: 11px;
+  right: 19px;
   pointer-events: all;
   transform: translateY(-90px);
-  font-family: "SuisseIntl-Bold";
-  // color: #1b42d8;
-  font-size: 18px;
-
-  &:hover {
-    .underline {
-      opacity: 1;
-    }
-  }
-
-  .underline {
-    position: absolute;
-    bottom: -10px;
-    padding-top: 10px;
-    width: 100%;
-    height: 2px;
-    opacity: 0.3;
-    border-bottom: 2px solid #1b42da;
-    transition: opacity 0.3s ease-in-out;
-  }
-}
-
-.left,
-.right {
-  position: absolute;
-  top: 50%;
-  width: 10px;
-  @media screen and (min-width: 750px) {
-    width: 12px;
-  }
-}
-
-.left {
-  left: 10px;
-  left: -700px;
-  font-family: "SuisseIntl-Bold";
-  transform: translate(-40px, -50%);
-
-  @media screen and (min-width: 750px) {
-    left: 15px;
-  }
-}
-
-.right {
-  right: 10px;
-  transform: translate(40px, -50%);
-
-  @media screen and (min-width: 750px) {
-    right: 15px;
-  }
+  color:#1b42d8;
+  font: 50px*.5 "SuisseIntl-Bold", sans-serif;
+  text-decoration: underline;
 }
 
 .social {
@@ -522,4 +475,110 @@ main {
     transform: translate3d(0, 0, 0);
     opacity: 1;
   }
+}
+
+////////////////////////////////////////////////////////////////////////
+
+$size : 50px;
+$items : 10;
+$transition : .5s;
+$bounce : cubic-bezier(.3,1.4,.5,.9);
+$start-scale : .5;
+$start-rot : 190deg;
+
+nav {
+	display: block;
+	position: fixed;
+	width: $size * $items * 2;
+	height: $size * $items * 2;
+	user-select: none;
+  top: 100px;
+  left: 1500px;
+  transform: translateY(-200px);
+	
+	&.open {
+		transform: translate3d(0,0,0);
+	}
+	
+	&.top-left {
+		top: -$size * ($items - .5);
+		left:-$size * ($items - 1.4);
+	}
+}
+
+.disc {	
+	position: absolute;
+	display: inline-block;
+	text-align: center;
+	cursor: pointer;
+	font: $size*.5 "SuisseIntl-Bold", sans-serif;
+	line-height: $size * .8;
+	padding-top: $size * .2;
+	border-radius: $size * $items;
+	transform: scale3d($start-scale, $start-scale, $start-scale) rotate3d(0,0,1,$start-rot);
+	pointer-events: none;
+	opacity: 0;
+	cursor: pointer;
+	transition: transform $transition $bounce, opacity $transition;
+	
+	div {
+		transform: rotate(180deg);
+	}
+	
+	.open & {
+		pointer-events: auto;
+		opacity: 1;	
+	}
+}
+
+@for $i from 1 through $items {
+	.l#{$i} {
+		$i : $i - 1;
+		$-i : $items - $i;
+		
+		top: $i * $size;
+		left: $i * $size;
+		right: $i * $size;
+		bottom: $i * $size;
+    color: transparent;
+		transition-delay: math.div($i * $transition, $items);
+	
+		.open & {
+			transition-delay: math.div($i * $transition, $items);
+			transform: scale3d(1,1,1) rotate3d(0,0,1,-$start-rot);
+			opacity: 1;
+			
+			&:hover {
+				transition-delay: 0s;
+			}
+			
+			&.boggle {
+				transform: scale3d(.9,.9,.9) rotate3d(0,0,1,-($start-rot - 180deg));
+			}
+		}
+	}
+}
+
+.boggle {
+	line-height: $size*2;
+	padding: 0;
+	width: $size*2;
+	background: none;
+	opacity: 1;
+	transform: none;
+	pointer-events: auto;
+	transition-delay: 0s;
+  text-decoration: underline;
+	
+	.open & {
+		transform: rotate3d(0,0,1,0deg);
+	}
+
+	&:hover {
+		text-decoration: underline;
+	}
+	&:active {
+		transform: scale(.9);
+		transition-duration: 0s;
+	}
 }

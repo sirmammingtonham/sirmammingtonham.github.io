@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { TweenMax } from "gsap";
 import TinyGesture from "tinygesture";
 import AssetLoader from "../utils/AssetLoader";
+import { colorToHexString, pSBC } from "../utils/colorUtils";
 import { ImageItem } from "./Item";
 import Section from "./Section";
 import Konami from "konami";
@@ -274,6 +275,11 @@ export default class Timeline {
     this.animate();
     this.initCursorListeners();
     this.initListeners();
+    this.initMenuListeners();
+    this.updateMenu(
+      colorToHexString(this.pages[this.activePage].bgColor),
+      colorToHexString(this.pages[this.activePage].outlineTextColor)
+    );
     document.body.classList.add("ready");
   }
 
@@ -292,14 +298,8 @@ export default class Timeline {
       },
     });
 
-    TweenMax.to([".resume", ".logo", ".social"], 2, {
+    TweenMax.to([".resume", ".logo", ".social", "nav"], 2, {
       y: 0,
-      delay: 1,
-      ease: "Expo.easeInOut",
-    });
-
-    TweenMax.to([".left", ".right"], 2, {
-      x: 0,
       delay: 1,
       ease: "Expo.easeInOut",
     });
@@ -309,6 +309,143 @@ export default class Timeline {
         y: 0,
         delay: 1,
         ease: "Expo.easeInOut",
+      });
+    }
+  }
+
+  onMenuClick() {
+    let menuToggle = document.querySelector(".boggle");
+    let nav = document.querySelector("nav");
+    nav.classList.toggle("open");
+
+    if (nav.classList.contains("open")) {
+      menuToggle.innerHTML = "close";
+      TweenMax.to(".boggle", 1, {
+        background: colorToHexString(this.pages[this.activePage].bgColor),
+        textDecoration: "none",
+        ease: "Power4.easeOut",
+      });
+      menuToggle.addEventListener(
+        "mouseenter",
+        (_) => {
+          let open = nav.classList.contains("open");
+          TweenMax.to(".boggle", 1, {
+            background: open
+              ? pSBC(0.1, colorToHexString(this.pages[this.activePage].bgColor))
+              : "none",
+            textDecoration: "underline",
+            ease: "Power4.easeOut",
+          });
+        },
+        false
+      );
+      menuToggle.addEventListener(
+        "mouseleave",
+        (_) => {
+          let open = nav.classList.contains("open");
+          TweenMax.to(".boggle", 1, {
+            background: open
+              ? colorToHexString(this.pages[this.activePage].bgColor)
+              : "none",
+            textDecoration: open ? "none" : "underline",
+            ease: "Power4.easeOut",
+          });
+        },
+        false
+      );
+    } else {
+      menuToggle.innerHTML = "shortcut";
+      TweenMax.to(".boggle", 1, {
+        background: "none",
+        textDecoration: "underline",
+        ease: "Power4.easeOut",
+      });
+    }
+  }
+
+  initMenuListeners() {
+    document
+      .querySelector(".boggle")
+      .addEventListener("click", this.onMenuClick, false);
+    document.addEventListener(
+      "click",
+      (e) => {
+        let nav = document.querySelector("nav");
+        let isClickInside = nav.contains(e.target);
+
+        if (!isClickInside) {
+          if (nav.classList.contains("open")) {
+            this.onMenuClick();
+          }
+        }
+      },
+      false
+    );
+    let sections = Object.keys(this.sections);
+    for (let i = 0; i < 9; i++) {
+      let name = sections[i];
+      document.querySelector(`.l${9 - i}`).addEventListener(
+        "click",
+        function () {
+          this.c.scrolling = true;
+          TweenMax.to(this.c, 4, {
+            scrollPos: -this.sections[name].position.z,
+            ease: "Expo.easeInOut",
+            onUpdate: () => {
+              this.c.scrolling = true;
+            },
+          });
+          this.onMenuClick();
+        }.bind(this),
+        false
+      );
+    }
+  }
+
+  updateMenu(bgColor, interfaceColor) {
+    for (let i = 1; i <= 10; i++) {
+      let background = pSBC(i / 10, interfaceColor, bgColor);
+      let query = `.l${i}`;
+      TweenMax.to(query, 1, {
+        background,
+        color: i < 6 ? bgColor : interfaceColor,
+        ease: "Power4.easeOut",
+      });
+      if (i == 10) continue;
+      let disc = document.querySelector(query);
+      disc.addEventListener(
+        "mouseenter",
+        (_) => {
+          TweenMax.to(query, 1, {
+            background: pSBC(0.1, background),
+            textDecoration: "underline",
+            ease: "Power4.easeOut",
+          });
+        },
+        false
+      );
+      disc.addEventListener(
+        "mouseleave",
+        (_) => {
+          TweenMax.to(query, 1, {
+            background,
+            textDecoration: "none",
+            ease: "Power4.easeOut",
+          });
+        },
+        false
+      );
+    }
+
+    TweenMax.to(".boggle", 1, {
+      color: interfaceColor,
+      ease: "Power4.easeOut",
+    });
+
+    if (!document.querySelector("nav").classList.contains("open")) {
+      TweenMax.to(".boggle", 1, {
+        background: "none",
+        ease: "Power4.easeOut",
       });
     }
   }
@@ -417,9 +554,9 @@ export default class Timeline {
       // item.caption
       //         ? item.caption.position.y - 20
       //         : -item.mesh.scale.y / 2 - 50;
-      console.log(item.caption.position.y - 20);
-      console.log(-item.mesh.scale.y / 2 - 50);
-      console.log(this.linkGroup.position.y);
+      // console.log(item.caption.position.y - 20);
+      // console.log(-item.mesh.scale.y / 2 - 50);
+      // console.log(this.linkGroup.position.y);
 
       TweenMax.fromTo(
         this.linkGroup.position,
@@ -742,6 +879,14 @@ export default class Timeline {
       }
     }
 
+    if (document.querySelector("nav").classList.contains("open")) {
+      if (this.linkIntersect.length > 0) {
+        this.dom.cursor.dataset.cursor = "eye";
+      } else if (this.dom.cursor.dataset.cursor !== "cross") {
+        this.dom.cursor.dataset.cursor = "cross";
+      }
+    }
+
     if (this.resumeSection.isOpen) {
       this.linkIntersect = this.raycaster.intersectObject(
         this.resumeSection.linkBox
@@ -890,10 +1035,12 @@ export default class Timeline {
         stroke: `#${interfaceColor}`,
         ease: "Power4.easeOut",
       });
-      TweenMax.to(".resume .underline", 1, {
-        borderBottomColor: `#${interfaceColor}`,
+      TweenMax.to(".resume", 1, {
+        color: `#${interfaceColor}`,
         ease: "Power4.easeOut",
       });
+
+      this.updateMenu(`#${bgColor.getHexString()}`, `#${interfaceColor}`);
 
       document
         .querySelector("meta[name=theme-color]")
@@ -1016,6 +1163,7 @@ export default class Timeline {
     this.mouseUp = this.mouseUp.bind(this);
     this.openResume = this.openResume.bind(this);
     this.moveToStart = this.moveToStart.bind(this);
+    this.onMenuClick = this.onMenuClick.bind(this);
 
     window.addEventListener("resize", this.resize, false);
     this.renderer.domElement.addEventListener(
@@ -1036,6 +1184,7 @@ export default class Timeline {
     document
       .querySelector(".resume")
       .addEventListener("click", this.openResume, false);
+
     if (this.enableLoader)
       document
         .querySelector(".enter")

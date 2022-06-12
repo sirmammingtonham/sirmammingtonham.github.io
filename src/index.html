@@ -23,68 +23,50 @@
     <meta name="theme-color" content="#AEC7C3" />
     <meta name="theme-color" content="#AEC7C3" />
 
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "UA-40525870-6");
-
-      var startTime = new Date();
-    </script>
-
     <% for (var css in htmlWebpackPlugin.files.css) { %>
     <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet" />
     <% } %>
+
   </head>
 
   <body>
     <main>
-      <a href="#resume" class="resume cursor-eye" tabindex="0">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59.44 9.07">
-          <g>
-            <path
-              d="M25.83,17.65v2.58a4.87,4.87,0,0,0-.72-.05,2.14,2.14,0,0,0-1.46.42A1.74,1.74,0,0,0,23.18,22v4.32H20.54V17.7h2.54v1.63a2.44,2.44,0,0,1,2.35-1.69h.4Z"
-              transform="translate(-20.54 -17.44)"
-            />
-            <path
-              d="M33,23.6h2.43a4.22,4.22,0,0,1-1.73,2.18,5.12,5.12,0,0,1-6-.49A4.34,4.34,0,0,1,26.44,22a4.27,4.27,0,0,1,1.34-3.27,4.62,4.62,0,0,1,3.27-1.25,4.12,4.12,0,0,1,3.34,1.46,5.21,5.21,0,0,1,1.09,3.78H29.1A1.78,1.78,0,0,0,29.73,24,2.41,2.41,0,0,0,33,23.6Zm-2-4.14a2.09,2.09,0,0,0-1.29.4,1.66,1.66,0,0,0-.63,1.22h3.73a1.58,1.58,0,0,0-.53-1.2A1.92,1.92,0,0,0,31.05,19.46Z"
-              transform="translate(-20.54 -17.44)"
-            />
-            <path
-              d="M44.63,20.23H42.17c-.15-.56-.71-.83-1.68-.83s-1.38.21-1.38.64a.56.56,0,0,0,.25.48,2.26,2.26,0,0,0,.81.28l1.6.29A5.54,5.54,0,0,1,44.1,22a2,2,0,0,1,.72,1.65,2.42,2.42,0,0,1-1.15,2.16,5.35,5.35,0,0,1-3,.76,5,5,0,0,1-2.87-.77,3.15,3.15,0,0,1-1.35-2.24h2.45c.21.72.81,1.09,1.81,1.09a2.81,2.81,0,0,0,1.16-.2.64.64,0,0,0,.44-.57.57.57,0,0,0-.31-.49A3.15,3.15,0,0,0,41,23l-1.53-.26a4,4,0,0,1-2.06-.87,2.23,2.23,0,0,1-.74-1.77,2.17,2.17,0,0,1,1.13-1.94,5.13,5.13,0,0,1,2.8-.71,5.06,5.06,0,0,1,2.72.68A2.84,2.84,0,0,1,44.63,20.23Z"
-              transform="translate(-20.54 -17.44)"
-            />
-            <path
-              d="M51.51,26.31v-1.2a3.19,3.19,0,0,1-1,1.05,2.83,2.83,0,0,1-1.52.36,2.68,2.68,0,0,1-2.31-.9A4.63,4.63,0,0,1,46,22.88V17.7h2.64v4.53c0,.31,0,.55,0,.72a5.12,5.12,0,0,0,.08.59,1.24,1.24,0,0,0,.2.5,1.17,1.17,0,0,0,.4.3,1.29,1.29,0,0,0,.62.13,1.37,1.37,0,0,0,1.2-.51,3.23,3.23,0,0,0,.35-1.72V17.7h2.64v8.61Z"
-              transform="translate(-20.54 -17.44)"
-            />
-            <path
-              d="M58.7,21.83v4.48H56.06V17.7H58.7v1.14a2.57,2.57,0,0,1,1-.94,3.23,3.23,0,0,1,1.59-.39A2.46,2.46,0,0,1,63.86,19a3.35,3.35,0,0,1,3-1.45,2.62,2.62,0,0,1,2.25.89,4.72,4.72,0,0,1,.64,2.74v5.17H67.06V21.8c0-.3,0-.54,0-.72a3.64,3.64,0,0,0-.09-.6,1.37,1.37,0,0,0-.21-.5,1,1,0,0,0-.39-.3,1.46,1.46,0,0,0-.62-.12,1.29,1.29,0,0,0-1.17.55,3.12,3.12,0,0,0-.37,1.72v4.48H61.56V21.8c0-.3,0-.54,0-.72a5,5,0,0,0-.08-.6,1.37,1.37,0,0,0-.21-.5,1,1,0,0,0-.39-.3,1.48,1.48,0,0,0-.63-.12,1.31,1.31,0,0,0-1.17.55A3.22,3.22,0,0,0,58.7,21.83Z"
-              transform="translate(-20.54 -17.44)"
-            />
-            <path
-              d="M77.5,23.6h2.43a4.22,4.22,0,0,1-1.73,2.18,5.12,5.12,0,0,1-6-.49A4.34,4.34,0,0,1,70.92,22a4.27,4.27,0,0,1,1.34-3.27,4.62,4.62,0,0,1,3.27-1.25,4.12,4.12,0,0,1,3.34,1.46A5.25,5.25,0,0,1,80,22.68H73.58A1.78,1.78,0,0,0,74.21,24a2.41,2.41,0,0,0,3.29-.4Zm-2-4.14a2.09,2.09,0,0,0-1.29.4,1.66,1.66,0,0,0-.63,1.22h3.73a1.58,1.58,0,0,0-.53-1.2A1.92,1.92,0,0,0,75.53,19.46Z"
-              transform="translate(-20.54 -17.44)"
-            />
-          </g>
-        </svg>
-        <div class="underline"></div>
-      </a>
+      <nav class="top-left">
+        <a class="disc l1 cursor-eye">
+          <div>end</div>
+        </a>
+        <a class="disc l2 cursor-eye">
+          <div>contact</div>
+        </a>
+        <a class="disc l3 cursor-eye">
+          <div>skills</div>
+        </a>
+        <a class="disc l4 cursor-eye">
+          <div>education</div>
+        </a>
+        <a class="disc l5 cursor-eye">
+          <div>publications</div>
+        </a>
+        <a class="disc l6 cursor-eye">
+          <div>experience</div>
+        </a>
+        <a class="disc l7 cursor-eye">
+          <div>projects!</div>
+        </a>
+        <a class="disc l8 cursor-eye">
+          <div>about me</div>
+        </a>
+        <a class="disc l9 cursor-eye">
+          <div>intro</div>
+        </a>
+        <a class="disc l10 boggle cursor-eye">
+          shortcut
+        </a>
+      </nav>
 
-<!-- <div class="left">
-<h1>Intro</h1>
-<h1>About</h1>
-<h1>Projects</h1>
-<h1>Experience</h1>
-<h1>Publications</h1>
-<h1>Education</h1>
-<h1>Skills</h1>
-<h1>Contact</h1>
-<h1>End</h1>
-		</div> -->
+      <a class="resume cursor-eye" tabindex="0">
+        <div>resume</div>
+      </a>
 
       <div class="social">
         <a
@@ -420,19 +402,5 @@
     <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
     <script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
     <% } %>
-
-    <script>
-      document.querySelector(".enter").addEventListener("click", function () {
-        var endTime = new Date();
-        var timeDiff = endTime - startTime;
-        timeDiff /= 1000;
-        var seconds = Math.round(timeDiff);
-
-        gtag("event", "Pressed Enter", {
-          event_label: "Seconds Waited",
-          value: seconds,
-        });
-      });
-    </script>
   </body>
 </html>
