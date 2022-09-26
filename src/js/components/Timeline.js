@@ -59,7 +59,7 @@ export default class Timeline {
     this.assetList = Object.fromEntries(
       Object.entries(assetData).map(([key, val], _) => [key, Object.keys(val)])
     );
-    this.assetList.resume = ["resume.png"];
+    this.assetList.resume = ["resume.jpg"];
     this.assetList.end = [];
     this.assetData = assetData;
 
@@ -298,13 +298,18 @@ export default class Timeline {
       },
     });
 
-    TweenMax.to([".resume", ".logo", ".social", "nav"], 2, {
+    TweenMax.to([".resume", ".social", ".updated", "nav"], 2, {
       y: 0,
       delay: 1,
       ease: "Expo.easeInOut",
     });
 
     if (this.gyroEnabled) {
+      TweenMax.to(".updated", 2, {
+        x: 50,
+        delay: 1,
+        ease: "Expo.easeInOut",
+      });
       TweenMax.to(this.dom.compass, 2, {
         y: 0,
         delay: 1,
@@ -1036,6 +1041,10 @@ export default class Timeline {
         ease: "Power4.easeOut",
       });
       TweenMax.to(".resume", 1, {
+        color: `#${interfaceColor}`,
+        ease: "Power4.easeOut",
+      });
+      TweenMax.to(".updated", 1, {
         color: `#${interfaceColor}`,
         ease: "Power4.easeOut",
       });

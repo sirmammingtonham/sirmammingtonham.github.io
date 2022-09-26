@@ -1,22 +1,34 @@
 import * as THREE from "three";
 import { ImageItem, TextItem } from "./Item";
+import sections from "../config/sections";
 
 export default class Section extends THREE.Group {
   constructor(opts = { timeline, section }) {
     super();
     Object.assign(this, opts);
 
+    this.createSection(this.section);
     switch (this.section) {
       case "intro": {
-        this.createIntroSection();
+        this.addIntroBadge();
         break;
       }
       case "about": {
-        this.createAboutSection();
+        this.timeline.items["about/me.jpg"] = new ImageItem({
+          assetId: "about/me.jpg",
+          timeline: this.timeline,
+          texture: this.timeline.assets.textures[this.section]["me.jpg"],
+          data: this.timeline.assetData[this.section]["me.jpg"],
+          page: this.section,
+          x: 0,
+          y: 250,
+          z: -900,
+        });
+
+        this.add(this.timeline.items["about/me.jpg"]);
         break;
       }
       case "projects": {
-        this.createProjectsSection();
         break;
       }
       case "resume": {
@@ -24,27 +36,22 @@ export default class Section extends THREE.Group {
         break;
       }
       case "experience": {
-        this.createExperienceSection();
         break;
       }
       case "publications": {
-        this.createPublicationsSection();
         break;
       }
       case "education": {
-        this.createEducationSection();
         break;
       }
       case "skills": {
-        this.createSkillsSection();
         break;
       }
       case "contact": {
-        this.createContactSection();
         break;
       }
       case "end": {
-        this.createEndSection();
+        this.addWhooshButton();
         break;
       }
       default: {
@@ -93,37 +100,86 @@ export default class Section extends THREE.Group {
     this.add(text);
   }
 
-  createIntroSection() {
-    this.addText({
-      text: "COMPSCI STUDENT\nAI ENTHUSIAST\nMAKER",
-      font: "SuisseIntl-Bold",
-      size: 60,
-      x: 0,
-      y: 0,
-      z: 0,
-    });
+  createSection(sectionId) {
+    const data = sections[sectionId];
+    if (!data) return;
+    if (data["title"]) {
+      if (typeof data["title"] === "string") {
+        this.addTitle(data["title"]);
+      } else {
+        for (const titleData of data["title"]) {
+          this.addTitle(titleData[0], titleData[1]);
+        }
+      }
+    }
 
-    this.addText({
-      text: "ETHAN",
-      font: "bruh_outline",
-      size: 400,
-      x: 0,
-      y: 250,
-      z: -500,
-      segments: 15,
-    });
+    if (data["texts"]) {
+      for (const textData of data["texts"]) {
+        this.addText(textData);
+      }
+    }
 
-    this.addText({
-      text: "JOSEPH",
-      font: "bruh_outline",
-      size: 400,
-      x: -60,
-      y: -200,
-      z: -500,
-      segments: 15,
-    });
+    if (data["assets"]) {
+      let id,
+        itemIndex = 0;
 
-    this.addIntroBadge();
+      // add items
+      this.timeline.assetList[this.section].forEach((filename) => {
+        id = `${this.section}/${filename}`;
+
+        this.timeline.items[id] = new ImageItem({
+          assetId: id,
+          timeline: this.timeline,
+          texture: this.timeline.assets.textures[this.section][filename],
+          data: this.timeline.assetData[this.section][filename],
+          page: this.section,
+          itemIndex: itemIndex,
+          itemIndexTotal: itemIndex,
+        });
+
+        this.add(this.timeline.items[id]);
+
+        itemIndex++;
+      });
+    }
+
+    if (data["textItems"]) {
+      for (const itemData of data["textItems"]) {
+        const id = itemData["itemId"];
+        this.timeline.items[id] = new TextItem({
+          timeline: this.timeline,
+          page: this.section,
+          ...itemData,
+        });
+        this.add(this.timeline.items[id]);
+      }
+    }
+  }
+
+  createResumeSection() {
+    this.position.set(0, 2000 / this.timeline.scene.scale.y, 0);
+    this.visible = false;
+
+    let material = new THREE.MeshBasicMaterial({
+      map: this.timeline.assets.textures["resume"]["resume.jpg"],
+      transparent: true,
+    });
+    let geom = new THREE.PlaneGeometry(1, 1);
+    let resume = new THREE.Mesh(geom, material);
+    resume.scale.set(800, 1000, 1);
+    resume.position.set(0, 0, 0);
+    this.add(resume);
+
+    // for raycasting so it doesn't just pick up on letters
+    this.linkBox = new THREE.Mesh(
+      new THREE.PlaneBufferGeometry(800, 1000),
+      new THREE.MeshBasicMaterial({ alphaTest: 0, visible: false })
+    );
+    this.linkBox.position.set(0, 0, 1);
+    this.linkBox.onClick = () => {
+      window.open("assets/resume/resume.pdf", "_blank");
+    };
+    this.add(this.linkBox);
   }
 
   addIntroBadge() {
@@ -149,502 +205,6 @@ export default class Section extends THREE.Group {
     if (this.timeline.c.size.w < 600) this.badge.scale.set(1.5, 1.5, 1);
 
     this.add(this.badge);
-  }
-
-  createAboutSection() {
-    this.addTitle("ABOUT ME");
-
-    this.addText({
-      text: "I am a fast learning and motivated computer science student\nwith a passion for artificial intelligence.",
-      font: "SuisseIntl-Bold",
-      size: 26,
-      x: 0,
-      y: -60,
-      z: -700,
-    });
-    this.addText({
-      text: "I love making (and breaking) things to learn more about\nhow stuff works.",
-      font: "Suisse Intl",
-      size: 26,
-      x: 0,
-      y: -180,
-      z: -700,
-    });
-
-    this.timeline.items["about/me.jpg"] = new ImageItem({
-      assetId: "about/me.jpg",
-      timeline: this.timeline,
-      texture: this.timeline.assets.textures[this.section]["me.jpg"],
-      data: this.timeline.assetData[this.section]["me.jpg"],
-      page: this.section,
-      x: 0,
-      y: 250,
-      z: -900,
-    });
-
-    this.add(this.timeline.items["about/me.jpg"]);
-  }
-
-  createProjectsSection() {
-    this.addTitle("PROJECTS!");
-
-    let id,
-      itemIndex = 0;
-
-    // add items
-    this.timeline.assetList[this.section].forEach((filename) => {
-      id = `${this.section}/${filename}`;
-
-      this.timeline.items[id] = new ImageItem({
-        assetId: id,
-        timeline: this.timeline,
-        texture: this.timeline.assets.textures[this.section][filename],
-        data: this.timeline.assetData[this.section][filename],
-        page: this.section,
-        itemIndex: itemIndex,
-        itemIndexTotal: itemIndex,
-      });
-
-      this.add(this.timeline.items[id]);
-
-      itemIndex++;
-    });
-  }
-
-  createExperienceSection() {
-    this.addTitle("EXPERIENCE");
-
-    // header sections
-    this.addText({
-      text: "RL and NLP Research @ Rensselaer Polytechnic Institute\nJan 2020 — Present",
-      font: "SuisseIntl-Bold",
-      size: 26,
-      x: 0,
-      y: 100,
-      z: -700,
-    });
-
-    this.addText({
-      text: "Project Lead @ Rensselaer Center for Open Source\nJan 2020 — Present",
-      font: "SuisseIntl-Bold",
-      size: 26,
-      x: 0,
-      y: 100,
-      z: -1500,
-    });
-
-    this.addText({
-      text: "Systems Research, Developer @ Carnegie Mellon SEI\nJun 2020 — Present",
-      font: "SuisseIntl-Bold",
-      size: 26,
-      x: 0,
-      y: 100,
-      z: -2300,
-    });
-
-    // this.addText({
-    //   text: "Developer @ Skywind & Skyblivion Mod Project\nJun 2020 — Present",
-    //   font: "SuisseIntl-Bold",
-    //   size: 20,
-    //   x: 0,
-    //   y: 100,
-    //   z: -3100,
-    // });
-
-    // this.addText({
-    //   text: "Face Detection Research @ Deep North AI\nJun 2018 — Aug 2018",
-    //   font: "SuisseIntl-Bold",
-    //   size: 26,
-    //   x: 0,
-    //   y: 100,
-    //   z: -3900,
-    // });
-
-    // body sections
-    this.addText({
-      text: `
-    • Working with Dr. Mei Si to research
-      Natural Language Processing and Reinforcement Learning.
-    • Co-authored research paper on tabular data-to-text generation
-      using transformer neural networks, awaiting publication.
-    • Currently working on using NLP and RL to generate fully
-      tailorable video games, including dialogue agents
-      and a cohesive storyline.`,
-      font: "Suisse Intl",
-      size: 20,
-      x: 0,
-      y: -150,
-      z: -800,
-    });
-    this.addText({
-      text: `
-    • Founder and project lead for smartrider: the all-in-one RPI
-      transportation app for iOS, Android, and web built with Flutter.
-    • Led team of over 15 developers from zero mobile dev experience to
-      working beta in 4 semesters.
-    • Currently leading team to launch by Fall 2021.`,
-      font: "Suisse Intl",
-      size: 20,
-      x: 0,
-      y: -100,
-      z: -1600,
-    });
-    this.addText({
-      text: `
-    • Working with Dr. Amit Vasudevan to develop the next-gen uberSpark
-      toolkit for compositional verification of commodity system software.
-    • Also porting the uber extensible microhypervisor framework (uxmhf) to
-      use the next-gen toolkit, involves development in C and some ARM.
-    • Co-authoring research paper on using the uberSpark framework.`,
-      font: "Suisse Intl",
-      size: 20,
-      x: 0,
-      y: -100,
-      z: -2400,
-    });
-    // this.addText({
-    //   text: `
-    // • Joined team of over 100 developers trying to port Bethesda’s video games
-    //   Morrowind and Oblivion into the Skyrim Engine.
-    // • In charge of Spellmaking system, involves C++ reverse-engineering and
-    //   Flash/Actionscript UI development.`,
-    //   font: "Suisse Intl",
-    //   size: 20,
-    //   x: 0,
-    //   y: -50,
-    //   z: -3200,
-    // });
-    // this.addText({
-    //   text: `
-    // • Worked with researcher to develop, train, and evaluate face detection
-    //   models using the WIDER Face Dataset of almost 400,000 unique faces.
-    // • Helped develop detection model that scored in the top 3
-    //   globally for the WIDER Face Challenge 2018`,
-    //   font: "Suisse Intl",
-    //   size: 20,
-    //   x: 0,
-    //   y: -75,
-    //   z: -4000,
-    // });
-  }
-
-  createPublicationsSection() {
-    this.addTitle("PUBLICATIONS");
-
-    this.timeline.items["publications/dtt"] = new TextItem({
-      timeline: this.timeline,
-      text: "Improving Data-to-Text Generation via\nPreserving High-Frequency Phrases and Fact-Checking",
-      font: "Schnyder L",
-      isFancy: false,
-      size: 20,
-      data: {
-        caption: `
-        Joseph, Ethan, Julian Lioanag, and Mei Si. (2021)
-        IJCoL. Italian Journal of Computational Linguistics 7, no. 7-1, 2 (2021): 223-244.
-        `,
-        link: "https://journals.openedition.org/ijcol/909",
-        font: "Suisse Intl",
-        size: 9,
-
-      },
-      page: this.section,
-      x: 0,
-      y: 0,
-      z: -800,
-    });
-    this.add(this.timeline.items["publications/dtt"]);
-
-    this.timeline.items["publications/vbd"] = new TextItem({
-      timeline: this.timeline,
-      text: "Scraping Unstructured Data to Explore the Relationship\nbetween Rainfall Anomalies and Vector-Borne Disease Outbreaks",
-      font: "Schnyder L",
-      isFancy: false,
-      size: 20,
-      data: {
-        caption: `
-        Joseph, Ethan, Thilanka Munasinghe, Heidi Tubbs, Bhaskar Bishnoi, and Assaf Anyamba. (2021)
-        In 2021 IEEE International Conference on Big Data (Big Data), pp. 4156-4164. IEEE, 2021.
-        `,
-        link: "https://ieeexplore.ieee.org/abstract/document/9671853",
-        font: "Suisse Intl",
-        size: 12,
-      },
-      page: this.section,
-      x: 0,
-      y: 0,
-      z: -1600,
-    });
-    this.add(this.timeline.items["publications/vbd"]);
-
-    this.timeline.items["publications/cfcc"] = new TextItem({
-      timeline: this.timeline,
-      text: "A Corpus for Commonsense Inference in Story Cloze Test",
-      font: "Schnyder L",
-      isFancy: false,
-      size: 20,
-      data: {
-        caption: `
-        Yao, Bingsheng, Ethan Joseph, Julian Lioanag and Mei Si. (in press)
-        In Proceedings of The 13th Language Resources and Evaluation Conference.
-        `,
-        link: "",
-        font: "Suisse Intl",
-        size: 12,
-      },
-      page: this.section,
-      x: 0,
-      y: 0,
-      z: -2400,
-    });
-    this.add(this.timeline.items["publications/cfcc"]);
-  }
-
-  createEducationSection() {
-    this.addTitle("EDUCATION");
-
-    this.timeline.items["education/rpi"] = new TextItem({
-      timeline: this.timeline,
-      text: "Rensselaer Polytechnic Institute",
-      font: "Schnyder L",
-      isFancy: true,
-      size: 40,
-      data: {
-        caption: `
-        GPA: 3.90/4.00
-        Relevant Coursework:
-        - Intro to Algorithms
-        - Data Analytics
-        - Learning and Advanced Game AI
-        - Cognitive Computing
-        - Undergraduate Research
-        `,
-        link: "",
-      },
-      page: this.section,
-      x: 0,
-      y: 50,
-      z: -800,
-    });
-    this.add(this.timeline.items["education/rpi"]);
-
-    this.addText({
-      text: "Bachelors of Science in Computer Science",
-      font: "Schnyder L",
-      size: 20,
-      x: 0,
-      y: -50,
-      z: -800,
-    });
-    this.addText({
-      text: "Aug 2019 - Dec 2021",
-      font: "Schnyder L",
-      size: 20,
-      x: 0,
-      y: -100,
-      z: -800,
-    });
-    this.addText({
-      text: "summa cum laude",
-      font: "Schnyder L",
-      size: 20,
-      x: 0,
-      y: -150,
-      z: -800,
-    });
-
-
-    this.timeline.items["education/cornell"] = new TextItem({
-      timeline: this.timeline,
-      text: "Cornell University (Cornell Tech)",
-      font: "Schnyder L",
-      isFancy: true,
-      size: 40,
-      // data: {
-      //   caption: `
-      //   `,
-      //   link: "",
-      // },
-      page: this.section,
-      x: 0,
-      y: 50,
-      z: -1600,
-    });
-    this.add(this.timeline.items["education/cornell"]);
-
-    this.addText({
-      text: "Masters of Engineering in Computer Science",
-      font: "Schnyder L",
-      size: 20,
-      x: 0,
-      y: -50,
-      z: -1600,
-    });
-    this.addText({
-      text: "Aug 2022 - Expected May 2023",
-      font: "Schnyder L",
-      size: 20,
-      x: 0,
-      y: -100,
-      z: -1600,
-    });
-  }
-
-  createSkillsSection() {
-    this.addTitle("SKILLS");
-    this.addText({
-      text: "My most valuable skill is my ability to learn things quickly.",
-      font: "Schnyder L",
-      size: 20,
-      x: 0,
-      y: 150,
-      z: -600,
-    });
-    this.addText({
-      text: "Click an icon to see more.",
-      font: "Schnyder L",
-      size: 14,
-      x: 0,
-      y: -150,
-      z: -650,
-    });
-
-    this.timeline.items["skills/languages"] = new TextItem({
-      timeline: this.timeline,
-      text: "A",
-      font: "icons",
-      size: 60,
-      data: {
-        caption: `
-        Languages:
-        - Python
-        - C++
-        - C
-        - Java
-        - JavaScript, TypeScript
-        - Dart
-        - HTML/CSS/SASS
-        `,
-        link: "",
-      },
-      page: this.section,
-      x: -50,
-      y: 0,
-      z: -700,
-      openY: 100,
-    });
-    this.add(this.timeline.items["skills/languages"]);
-
-    this.timeline.items["skills/frameworks"] = new TextItem({
-      timeline: this.timeline,
-      text: "B",
-      font: "icons",
-      size: 60,
-      data: {
-        caption: `
-        Frameworks:
-        - Flutter
-        - PyTorch
-        - Tensorflow
-        - Pandas
-        - Scikit-Learn
-        - Matplotlib
-        - three.js
-        `,
-        link: "",
-      },
-      page: this.section,
-      x: 50,
-      y: 0,
-      z: -800,
-      openY: 100,
-    });
-    this.add(this.timeline.items["skills/frameworks"]);
-
-    this.timeline.items["skills/soft"] = new TextItem({
-      timeline: this.timeline,
-      text: "C",
-      font: "icons",
-      size: 60,
-      data: {
-        caption: `
-        Essential Skills:
-        - Problem-Solver
-        - Adaptable
-        - Creative
-        - Leader
-        - Self-Motivated
-        `,
-        link: "",
-      },
-      page: this.section,
-      x: -50,
-      y: -100,
-      z: -1000,
-      openY: 100,
-    });
-    this.add(this.timeline.items["skills/soft"]);
-
-    this.timeline.items["skills/tools"] = new TextItem({
-      timeline: this.timeline,
-      text: "D",
-      font: "icons",
-      size: 60,
-      data: {
-        caption: `
-        Tools:
-        - Git
-        - Google Cloud
-        - Docker
-        - Firebase
-        - Webpack
-        - Adobe Illustrator
-        `,
-        link: "",
-      },
-      page: this.section,
-      x: 50,
-      y: -100,
-      z: -900,
-      openY: 100,
-    });
-    this.add(this.timeline.items["skills/tools"]);
-  }
-
-  createContactSection() {
-    this.addTitle("CONTACT", 150);
-    this.addTitle("ME!", -150);
-
-    this.addText({
-      text: "Click any of the links on the\nbottom right to get in touch!",
-      font: "Schnyder L",
-      size: 32,
-      x: 0,
-      y: 0,
-      z: -600,
-    });
-  }
-
-  createEndSection() {
-    this.addText({
-      text: "THANKS FOR STOPPING BY",
-      font: "SuisseIntl-Bold",
-      size: 60,
-      x: 0,
-      y: 0,
-      z: 0,
-    });
-
-    this.addText({
-      text: "E",
-      font: "icons",
-      size: 580,
-      x: 0,
-      y: 0,
-      z: -525,
-      segments: 15,
-    });
-
-    this.addWhooshButton();
   }
 
   addWhooshButton() {
@@ -681,40 +241,5 @@ export default class Section extends THREE.Group {
     if (this.timeline.c.size.w < 600) this.whoosh.scale.set(1.5, 1.5, 1);
 
     this.add(this.whoosh);
-  }
-
-  createResumeSection() {
-    this.position.set(0, 2000 / this.timeline.scene.scale.y, 0);
-    this.visible = false;
-
-    let material = new THREE.MeshBasicMaterial({
-      map: this.timeline.assets.textures["resume"]["resume.png"],
-      transparent: true,
-    });
-    let geom = new THREE.PlaneGeometry(1, 1);
-    let resume = new THREE.Mesh(geom, material);
-    resume.scale.set(612, 792, 1);
-    resume.position.set(0, 0, 0);
-    this.add(resume);
-
-    this.addText({
-      text: "Updated: June '22",
-      font: "SuisseIntl-Bold",
-      size: 20,
-      x: 500,
-      y: 0,
-      z: 0,
-    });
-
-    // for raycasting so it doesn't just pick up on letters
-    this.linkBox = new THREE.Mesh(
-      new THREE.PlaneBufferGeometry(612, 792),
-      new THREE.MeshBasicMaterial({ alphaTest: 0, visible: false })
-    );
-    this.linkBox.position.set(0, 0, 1);
-    this.linkBox.onClick = () => {
-      window.open("assets/resume/resume.pdf", "_blank");
-    };
-    this.add(this.linkBox);
   }
 }

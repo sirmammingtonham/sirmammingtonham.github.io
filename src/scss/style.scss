@@ -240,19 +240,13 @@ main {
   }
 }
 
-.logo {
+.updated {
   position: absolute;
-  top: 15px;
+  bottom: 15px;
   left: 15px;
-  width: 190px;
-  height: 22px;
-  pointer-events: all;
-  transform: translateY(-60px);
-
-  @media screen and (min-width: 750px) {
-    width: 260px;
-    height: 30px;
-  }
+  transform: translateY(80px);
+  color:#1b42d8;
+  font: 35px*.5 "Schnyder L Web";
 }
 
 .resume {

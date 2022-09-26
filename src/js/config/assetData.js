@@ -1,13 +1,15 @@
 const assetData = {
   about: {
     "me.jpg": {
+      font: "Suisse Intl",
+      size: 16,
       caption: `
       In my free time, you can catch me:
-      • Playing video games
+      • Working on cool projects
       • Playing tennis or spikeball
       • Rock climbing
       • Learning guitar
-      • Reading One Piece or something
+      • Reading One Piece
       • Hiking or camping
       • Cooking`,
       link: "",
@@ -17,6 +19,10 @@ const assetData = {
     "smartrider.png": {
       caption: "smartrider: All-In-One RPI Transportation App",
       link: "https://github.com/sirmammingtonham/smartrider",
+    },
+    "blockdreams.png": {
+      caption: "BlockDreams: Deep Learning Smart Contract",
+      link: "https://github.com/sirmammingtonham/blockdreams",
     },
     "fakeblock.png": {
       caption: "fakeBlock: Fake News Blocking Browser Extension",
