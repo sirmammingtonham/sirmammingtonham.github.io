@@ -2,7 +2,7 @@ const sections = {
   intro: {
     texts: [
       {
-        text: "COMPSCI STUDENT\nAI ENTHUSIAST\nMAKER",
+        text: "AI ENGINEER\nNLP RESEARCHER\nMAKER",
         font: "SuisseIntl-Bold",
         size: 60,
         x: 0,
